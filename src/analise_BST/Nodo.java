@@ -1,4 +1,4 @@
-package analise_estrutura_de_dado;
+package analise_BST;
 
 public class Nodo {
 	protected Nodo esq;
