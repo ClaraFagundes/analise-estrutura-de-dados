@@ -2,7 +2,8 @@ package analise_BST;
 
 
 public class Arvore_BST {
-protected Nodo T;
+	protected Nodo T;
+	protected long comparacoes = 0;
 	
 	public Arvore_BST() {
 		T = null;
@@ -10,16 +11,24 @@ protected Nodo T;
 	public void add (Tinfo Item) {
 		T = add(T,Item,null);
 	}
+
+	public long getComparacoes(){
+		return comparacoes;
+	}
 	
 	public Nodo add(Nodo T,Tinfo Item,Nodo pai) {
 		if (T == null) {
 			T = new Nodo (Item,pai);
 		} else {
 			pai = T;
+
 			 if (Item.Chave > T.Item.Chave) {
+				 comparacoes++;
 				T.dir = add(T.dir,Item,pai);
 			 }
+
 			 else if (Item.Chave < T.Item.Chave) {
+				 comparacoes++;
 				 T.esq = add(T.esq,Item,pai);
 			 }
 		}
@@ -141,5 +150,17 @@ protected Nodo T;
 			posOrdem (T.dir);
 			System.out.println(T.Item);
 		}
+	}
+	public int altura(Nodo no){
+		if(no == null)
+			return 0;
+
+		return 1 + Math.max(
+				altura(no.esq),
+				altura(no.dir)
+		);
+	}
+	public Nodo raiz() {
+		return T;
 	}
 }

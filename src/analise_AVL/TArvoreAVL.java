@@ -5,6 +5,8 @@ public class TArvoreAVL {
     public TNodo T;
     private int h;
     private TNodo p;
+    private long comparacoes = 0;
+    private long rotacoes = 0;
 
     public TArvoreAVL() {
         T = null;
@@ -13,11 +15,17 @@ public class TArvoreAVL {
     public TNodo raiz(){
         return T;
     }
+    public long getRotacoes(){
+        return rotacoes;
+    }
 
     public void insere (TInfo item) {
         System.out.print("Inserindo "+item.chave+"\n");
         T = insere(T,item,null);
         AVL(p);
+    }
+    public long getComparacoes(){
+        return comparacoes;
     }
 
     public TNodo insere (TNodo T, TInfo item, TNodo pai) {
@@ -26,10 +34,14 @@ public class TArvoreAVL {
             this.p = T;
         } else {
             pai = T;
-            if (item.chave < T.item.chave)
-                T.esq = insere(T.esq,item,pai);
-            else if (item.chave > T.item.chave)
+            if (item.chave < T.item.chave) {
+                comparacoes++;
+                T.esq = insere(T.esq, item, pai);
+            }
+            else if (item.chave > T.item.chave){
+                comparacoes++;
                 T.dir = insere(T.dir,item,pai);
+            }
         }
         return T;
     }
@@ -103,6 +115,7 @@ public class TArvoreAVL {
     }
 
     public void rotacao_direita(TNodo T) {
+        rotacoes++;
         TNodo apu = T.esq;
         T.esq = apu.dir; if (apu.dir != null) apu.dir.pai = T;
         apu.pai = T.pai;
@@ -119,6 +132,7 @@ public class TArvoreAVL {
     }
 
     public void rotacao_esquerda(TNodo T) {
+        rotacoes++;
         TNodo apu = T.dir;
         T.dir = apu.esq; if (apu.esq != null) apu.esq.pai = T;
         apu.pai = T.pai;
@@ -287,6 +301,15 @@ public class TArvoreAVL {
                 globalStack.push( localStack.pop() );
         }
         System.out.println("...................................................................");
+    }
+    public int altura(TNodo no){
+        if(no == null)
+            return 0;
+
+        return 1 + Math.max(
+                altura(no.esq),
+                altura(no.dir)
+        );
     }
 
 }
