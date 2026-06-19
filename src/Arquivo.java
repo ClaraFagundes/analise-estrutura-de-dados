@@ -1,12 +1,6 @@
-import java.io.FileReader; // esse pacote ler apenas um caractere por vez, para usar o BufferedREader é necessário
-//adicionar esse, pois ele complementa o outro;
-
-import java.io.BufferedReader;//pacote que especificamnete lê arquivos em java. A diferença dele para File.io.FileReader
-// é que esse tem um ação que ajuda a ler uam linha completa, é próprio para isso;
-
-import java.io.IOException;//tratamento de erros, é necesssário para tratar erros como se o programa não conseguir abrir o arquivo
-//ou se ele não existe; try-catch
-
+import java.io.FileReader;
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Arquivo {
@@ -17,7 +11,7 @@ public class Arquivo {
 
         try {
             BufferedReader br = new BufferedReader(
-                    new FileReader("fragrantica_dataset.csv"));
+                    new FileReader("complete_fragrantica_dataset.csv"));
 
             br.readLine(); // lê a primeira linha, pois essa é cabeçalho, se eu não pular ela, dá problema pois é tudo texto;
 
@@ -25,19 +19,18 @@ public class Arquivo {
 
             while ((linha = br.readLine()) != null) {
 
-                //String[] dados = linha.split(";");
                 String[] dados = linha.split(";", -1);
 
                 Perfume p = new Perfume();
 
-                // id
+                // chave
                 if (dados.length > 0 && !dados[0].trim().isEmpty()) {
                     p.id = Integer.parseInt(dados[0]);
                 } else {
                     p.id = 0;
                 }
 
-                // perfume
+                // nome
                 if (dados.length > 1) {
                     p.perfume = dados[1];
                 } else {

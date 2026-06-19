@@ -5,7 +5,7 @@ public class TNodo {
     TNodo pai;
 
     public TNodo (TInfo item, TNodo pai){
-        this.item = new TInfo(item.chave, item.nome);
+        //this.item = new TInfo(item.chave, item.nome);
         this.esq = null;
         this.dir = null;
         this.pai = pai;
