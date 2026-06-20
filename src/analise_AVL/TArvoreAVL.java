@@ -20,7 +20,6 @@ public class TArvoreAVL {
     }
 
     public void insere (TInfo item) {
-        System.out.print("Inserindo "+item.chave+"\n");
         T = insere(T,item,null);
         AVL(p);
     }
@@ -35,11 +34,11 @@ public class TArvoreAVL {
         } else {
             pai = T;
             if (item.chave < T.item.chave) {
-                comparacoes++;
+
                 T.esq = insere(T.esq, item, pai);
             }
             else if (item.chave > T.item.chave){
-                comparacoes++;
+
                 T.dir = insere(T.dir,item,pai);
             }
         }
@@ -58,10 +57,15 @@ public class TArvoreAVL {
             if (item.chave == T.item.chave)
                 return T;
             else
-            if (item.chave < T.item.chave)
+
+            if (item.chave < T.item.chave){
+                comparacoes++;
                 T = pesquisa(T.esq,item);
-            else
+            }
+            else{
+                comparacoes++;
                 T = pesquisa(T.dir,item);
+            }
         }
         return T;
     }

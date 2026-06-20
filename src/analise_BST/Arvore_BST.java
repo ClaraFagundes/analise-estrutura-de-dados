@@ -24,12 +24,10 @@ public class Arvore_BST {
 			pai = T;
 
 			 if (Item.Chave > T.Item.Chave) {
-				 comparacoes++;
 				T.dir = add(T.dir,Item,pai);
 			 }
 
 			 else if (Item.Chave < T.Item.Chave) {
-				 comparacoes++;
 				 T.esq = add(T.esq,Item,pai);
 			 }
 		}
@@ -42,13 +40,18 @@ public class Arvore_BST {
 		if (T == null)
 			return T;
 		else {
-			if (item.Chave == T.Item.Chave)
+			if (item.Chave == T.Item.Chave){
 				return T;
+			}
 			else 
-				if (item.Chave > T.Item.Chave)
+				if (item.Chave > T.Item.Chave){
+					comparacoes++;
 					T = pesquisa (T.dir,item);
-				else 
+				}
+				else {
+					comparacoes++;
 					T = pesquisa (T.esq,item);
+				}
 			return T;
 		}
 	}

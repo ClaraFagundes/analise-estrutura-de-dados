@@ -5,10 +5,10 @@ import analise_BST.Tinfo;
 
 public class TNodo {
 
-    TNodo esq;
-    TInfo item;
-    TNodo dir;
-    TNodo pai;
+    public TNodo esq;
+    public TInfo item;
+    public TNodo dir;
+    public TNodo pai;
 
     int bal = 0;
     int hesq = 0;
@@ -23,5 +23,36 @@ public class TNodo {
         this.esq = null;
         this.dir = null;
         this.pai = pai;
+    }
+    public TNodo () {
+
+    }
+
+    public TNodo getEsq() {
+        return esq;
+    }
+
+    public void setEsq(TNodo esq) {
+        this.esq = esq;
+    }
+
+    public TNodo getDir() {
+        return dir;
+    }
+
+    public void setDir(TNodo dir) {
+        this.dir = dir;
+    }
+
+    public TInfo getItem() {
+        return item;
+    }
+
+    public void setItem(Tinfo item) {
+        item = item;
+    }
+
+    public TNodo getPai() {
+        return pai;
     }
 }

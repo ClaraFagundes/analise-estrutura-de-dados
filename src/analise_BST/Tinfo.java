@@ -15,6 +15,9 @@ public class Tinfo {
 	protected String perfurmer;
 	protected String mainaccon;
 
+	public Tinfo (int chave ){
+		this.Chave = chave;
+	}
 	public Tinfo(int chave, String nome, String brand, String country, String sexo,
 	             double ratingVAL, int ratingCountry, double ano,
 	             String top, String midlle, String base,
