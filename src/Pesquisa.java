@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 
 public class Pesquisa {
     public static void main (String[] args){
+        Scanner sc = new Scanner (System.in);
         String linha;
         int contador = 0;
         String arquivo = "src/complete_fragrantica_dataset.csv";
@@ -19,7 +20,7 @@ public class Pesquisa {
         try( BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
             linha = br.readLine();
             linha = br.readLine();
-            while (linha != null && contador < 1001 ){
+            while (linha != null && contador < 2000 ){
                     String dados[] = linha.split(";");
                     int id = Integer.parseInt(dados[0]);
                     String nome = dados[1];
@@ -46,7 +47,23 @@ public class Pesquisa {
             throw new RuntimeException(e);
         }
 
-        BST.preOrdem(BST.getRaiz());
+        System.out.println ("Digite a chave a ser pesquisada: ");
+        int chave = sc.nextInt();
+        TInfo item = new TInfo(chave);
+        Tinfo item2 = new Tinfo(chave);
+
+        Nodo no = BST.pesquisa(BST.getRaiz(),item2);
+        TNodo no2 = AVL.pesquisa(AVL.T,item);
+
+        if (no != null && no2 != null){
+            System.out.println("AVL: "+no2.getItem() + " " + "Quantidade de comaparações: " + AVL.getComparacoes());
+            System.out.println("BST: "+no.getItem() + " " + "Quantidade de comaparações: " + BST.getComparacoes());
+        }
+
+        else {
+            System.out.println("árvore vazia ...");
+        }
+
 
     }
 }
