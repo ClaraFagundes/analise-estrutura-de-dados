@@ -60,7 +60,7 @@ public class TesteDesempenho {
 
         try{
 
-            String arquivo = "src/fragrantica_dataset.csv";
+            String arquivo = "src/complete_fragrantica_dataset.csv";
 
             Arvore_BST bst = new Arvore_BST();
 
@@ -82,16 +82,25 @@ public class TesteDesempenho {
                 String[] dados = linha.split(";");
 
                 int id = Integer.parseInt(dados[0]);
-
                 String nome = dados[1];
-
+                String brand = dados[2];
+                String country = dados[3];
+                String sexo = dados [4];
+                double ratingVAL = Double.parseDouble(dados[5]);
+                int ratingCountry = Integer.parseInt(dados[6]);
+                int ano = Integer.parseInt(dados[7]);
+                String top = dados[8];
+                String midlle = dados[9];
+                String base = dados[10];
+                String perfurmer = dados[11];
+                String mainaccon = dados [12];
                 bst.add(
-                        new Tinfo(id,nome)
+                        new Tinfo(id,nome,brand,country,sexo,ratingVAL,ratingCountry,ano,top,midlle,base,perfurmer,mainaccon)
                 );
 
                 if(exibir){
                     System.out.println(
-                            id + " - " + nome
+                            id + " - " + nome+brand+sexo+ratingVAL+ratingCountry+ano+top+midlle+base+perfurmer+mainaccon
                     );
                 }
 
@@ -119,11 +128,21 @@ public class TesteDesempenho {
                 String[] dados = linha.split(";");
 
                 int id = Integer.parseInt(dados[0]);
-
                 String nome = dados[1];
+                String brand = dados[2];
+                String country = dados[3];
+                String sexo = dados [4];
+                double ratingVAL = Double.parseDouble(dados[5]);
+                int ratingCountry = Integer.parseInt(dados[6]);
+                int ano = Integer.parseInt(dados[7]);
+                String top = dados[8];
+                String midlle = dados[9];
+                String base = dados[10];
+                String perfurmer = dados[11];
+                String mainaccon = dados [12];
 
                 avl.insere(
-                        new TInfo(id,nome)
+                        new TInfo(id,nome,brand,country,sexo,ratingVAL,ratingCountry,ano,top,midlle,base,perfurmer,mainaccon)
                 );
 
                 contador++;
