@@ -75,22 +75,18 @@ public class TArvoreAVL {
 
                 if (T.hesq >= T.hdir)
                     if (T.esq.hesq >= T.esq.hdir) {
-                        System.out.print("Rotação simples de "+T.item.chave+" para a direita\n");
                         rotacao_direita(T);
                     }
                     else {
-                        System.out.print("Rotação dupla de "+T.item.chave+" para a direita\n");
                         rotacao_esquerda(T.esq);
                         rotacao_direita(T);
                     }
 
                 if (T.hdir >= T.hesq)
                     if (T.dir.hdir >= T.dir.hesq) {
-                        System.out.print("Rotação simples de "+T.item.chave+" para a esquerda\n");
                         rotacao_esquerda(T);
                     }
                     else {
-                        System.out.print("Rotação dupla de "+T.item.chave+" para a esquerda\n");
                         rotacao_direita(T.dir);
                         rotacao_esquerda(T);
                     }

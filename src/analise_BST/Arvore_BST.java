@@ -11,6 +11,7 @@ public class Arvore_BST {
 	public void add (Tinfo Item) {
 		T = add(T,Item,null);
 	}
+	public Nodo getRaiz(){return T;}
 
 	public long getComparacoes(){
 		return comparacoes;

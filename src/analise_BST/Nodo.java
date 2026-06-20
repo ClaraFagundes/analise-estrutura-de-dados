@@ -7,7 +7,9 @@ public class Nodo {
 	protected Nodo pai;
 	
 	public Nodo(Tinfo Item,Nodo pai) {
-		this.Item = new Tinfo (Item.Chave, Item.Nome);
+		this.Item = new Tinfo ( Item.Chave, Item.Nome,Item.brand,Item.country, Item.sexo,
+		Item.ratingVAL,Item.ratingCountry,Item.ano,
+		Item.top,Item.midlle,Item.base,Item.perfurmer,Item.mainaccon);
 		this.esq = null;
 		this.dir = null;
 		this.pai = pai; 
