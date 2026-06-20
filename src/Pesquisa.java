@@ -56,7 +56,8 @@ public class Pesquisa {
         TNodo no2 = AVL.pesquisa(AVL.T,item);
 
         if (no != null && no2 != null){
-            System.out.println("AVL: "+no2.getItem() + " " + "Quantidade de comaparações: " + AVL.getComparacoes());
+            System.out.println("AVL: "+no2.getItem() + " " + "Quantidade de comaparações: " + AVL.getComparacoes()
+            + " Rotações: " + AVL.getRotacoes());
             System.out.println("BST: "+no.getItem() + " " + "Quantidade de comaparações: " + BST.getComparacoes());
         }
 
