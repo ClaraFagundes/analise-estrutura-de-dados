@@ -86,7 +86,7 @@ public class TesteDesempenho {
                 String brand = dados[2];
                 String country = dados[3];
                 String sexo = dados [4];
-                double ratingVAL = Double.parseDouble(dados[5]);
+                double ratingVAL = Double.parseDouble(dados[5].replace(",", "."));
                 int ratingCountry = Integer.parseInt(dados[6]);
                 int ano = Integer.parseInt(dados[7]);
                 String top = dados[8];
@@ -132,7 +132,7 @@ public class TesteDesempenho {
                 String brand = dados[2];
                 String country = dados[3];
                 String sexo = dados [4];
-                double ratingVAL = Double.parseDouble(dados[5]);
+                double ratingVAL = Double.parseDouble(dados[5].replace(",", "."));
                 int ratingCountry = Integer.parseInt(dados[6]);
                 int ano = Integer.parseInt(dados[7]);
                 String top = dados[8];
