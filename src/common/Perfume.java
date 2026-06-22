@@ -1,24 +1,24 @@
-package analise_AVL;
+package common;
 
-public class TInfo {
-    protected int chave;
-    protected String nome;
-    protected String brand;
-    protected String country;
-    protected String sexo;
-    protected double ratingVAL;
-    protected int ratingCountry;
-    protected double ano;
-    protected String top;
-    protected String midlle;
-    protected String base;
-    protected String perfurmer;
-    protected String mainaccon;
+public class Perfume {
+    private int chave;
+    private String nome;
+    private String brand;
+    private String country;
+    private String sexo;
+    private double ratingVAL;
+    private int ratingCountry;
+    private double ano;
+    private String top;
+    private String midlle;
+    private String base;
+    private String perfurmer;
+    private String mainaccon;
 
-    public TInfo (int chave ){
+    public Perfume (int chave ){
         this.chave = chave;
     }
-    public TInfo(int chave, String nome, String brand, String country, String sexo,
+    public Perfume(int chave, String nome, String brand, String country, String sexo,
                  double ratingVAL, int ratingCountry, double ano,
                  String top, String midlle, String base,
                  String perfurmer, String mainaccon) {
@@ -144,6 +144,6 @@ public class TInfo {
 
     @Override
     public String toString() {
-        return "Tinfo -> Chave=" + chave + ", Nome=" + nome + " ";
+        return "Perfume -> Chave = " + chave + ", Nome = " + nome;
     }
 }

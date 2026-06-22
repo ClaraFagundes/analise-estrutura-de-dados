@@ -1,4 +1,6 @@
-package analise_AVL;
+package datastructures.ArvoreAVL;
+
+import common.Perfume;
 
 public class TPilhaPonteiro {
 
@@ -35,7 +37,7 @@ public class TPilhaPonteiro {
         return aux.nodo;
     }
 
-    public TInfo peek(){
+    public Perfume peek(){
         return this.topo.item;
     }
 

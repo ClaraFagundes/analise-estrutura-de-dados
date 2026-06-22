@@ -1,4 +1,4 @@
-package analise_AVL;
+package datastructures.ArvoreAVL;
 
 public class TCelulaCabeca {
 

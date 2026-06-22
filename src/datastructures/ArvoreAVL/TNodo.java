@@ -1,12 +1,11 @@
-package analise_AVL;
+package datastructures.ArvoreAVL;
 
-import analise_BST.Nodo;
-import analise_BST.Tinfo;
+import common.Perfume;
 
 public class TNodo {
 
     public TNodo esq;
-    public TInfo item;
+    public Perfume item;
     public TNodo dir;
     public TNodo pai;
 
@@ -14,18 +13,15 @@ public class TNodo {
     int hesq = 0;
     int hdir = 0;
 
-    public TNodo(TInfo item, TNodo pai){
-            this.item = new TInfo (
-                    item.chave, item.nome,item.brand,item.country,item.sexo,
-                    item.ratingVAL,item.ratingCountry,item.ano, item.top,
-                    item.midlle,item.base,item.perfurmer,item.mainaccon
-            );
+    public TNodo () {
+
+    }
+
+    public TNodo(Perfume item, TNodo pai){
+        this.item = item;
         this.esq = null;
         this.dir = null;
         this.pai = pai;
-    }
-    public TNodo () {
-
     }
 
     public TNodo getEsq() {
@@ -44,11 +40,11 @@ public class TNodo {
         this.dir = dir;
     }
 
-    public TInfo getItem() {
+    public Perfume getItem() {
         return item;
     }
 
-    public void setItem(Tinfo item) {
+    public void setItem(Perfume item) {
         item = item;
     }
 

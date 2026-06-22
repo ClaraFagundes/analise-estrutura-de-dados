@@ -1,21 +1,20 @@
-package analise_BST;
+package datastructures.ArvoreBST;
+
+import common.Perfume;
 
 public class Nodo {
 	protected Nodo esq;
 	protected Nodo dir;
-	protected Tinfo Item;
+	protected Perfume Item;
 	protected Nodo pai;
-	
-	public Nodo(Tinfo Item,Nodo pai) {
-		this.Item = new Tinfo ( Item.Chave, Item.Nome,Item.brand,Item.country, Item.sexo,
-		Item.ratingVAL,Item.ratingCountry,Item.ano,
-		Item.top,Item.midlle,Item.base,Item.perfurmer,Item.mainaccon);
+
+	public Nodo () {}
+
+	public Nodo(Perfume Item, Nodo pai) {
+		this.Item = Item;
 		this.esq = null;
 		this.dir = null;
-		this.pai = pai; 
-	}
-	public Nodo () {
-		
+		this.pai = pai;
 	}
 
 	public Nodo getEsq() {
@@ -34,11 +33,11 @@ public class Nodo {
 		this.dir = dir;
 	}
 
-	public Tinfo getItem() {
+	public Perfume getItem() {
 		return Item;
 	}
 
-	public void setItem(Tinfo item) {
+	public void setItem(Perfume item) {
 		Item = item;
 	}
 
@@ -49,8 +48,9 @@ public class Nodo {
 	public void setPai(Nodo pai) {
 		this.pai = pai;
 	}
+
 	@Override
 	public String toString() {
-		return "Item-> " + Item.Chave + " "+ Item.Nome;
+		return "Item-> " + Item.getChave() + " "+ Item.getNome();
 	}
 }
