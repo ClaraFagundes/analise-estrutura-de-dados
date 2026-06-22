@@ -1,6 +1,7 @@
 package datastructures.ListaArranjo;
 
 import common.Perfume;
+import datastructures.ListaApontador.ListaApontador;
 import entities.Cronometro;
 import entities.EstruturaDeDados;
 import entities.enums.TipoInsercao;
@@ -12,6 +13,7 @@ public class ListaArranjo implements EstruturaDeDados {
     private int Ultimo;
     private int comparacoes;
     private TipoInsercao tipoInsercao;
+    private Cronometro cronometro;
 
     public ListaArranjo(TipoInsercao tipoInsercao, int Tmax) {
         this.Tmax = Tmax;
@@ -93,15 +95,23 @@ public class ListaArranjo implements EstruturaDeDados {
     //Alterei a busca para que ela se encaixasse na função imprimirPesquisa(), mas ela está fazendo a mesma coisa
     public Perfume PesquisaSequencial(Perfume item) {
         comparacoes = 0;
+        cronometro = new Cronometro();
+        cronometro.iniciar();
 
         if (!Vazia()) {
-            for(Perfume perfume : Item) {
+            for(int i = Primeiro; i < Ultimo; i++) {
                 comparacoes++;
-                if (perfume.getChave() == item.getChave()) return perfume;
+                if (Item[i].getChave() == item.getChave()) {
+                    cronometro.finalizar();
+                    return Item[i];
+                }
             }
         }
+        cronometro.finalizar();
         return null;
     }
+
+    public Cronometro getCronometro() { return cronometro; }
 
     public int getComparacoes() {
         return comparacoes;
@@ -129,6 +139,7 @@ public class ListaArranjo implements EstruturaDeDados {
     public String imprimirPesquisa(Perfume item) {
         Perfume perfume = PesquisaSequencial(item);
 
-        return "Lista Arranjo [Insere " + tipoInsercao.toString().toLowerCase() + "]: "+ perfume + " | Quantidade de comaparações: " + getComparacoes();
+        return "Lista Arranjo: "+ perfume + " | Quantidade de comparações: " + getComparacoes() +
+                " | Tempo de execução: " + getCronometro();
     }
 }

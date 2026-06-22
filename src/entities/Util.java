@@ -59,7 +59,7 @@ public class Util {
     }
 
     //Você joga um ArrayList de estruturas de dados armazenadas e ele retorna o resultado da pesquisa de todos
-    public static void pesquisar(ArrayList<EstruturaDeDados> estruturaDeDados) {
+    public static void pesquisar(ArrayList<EstruturaDeDados> estruturaDeDados, Scanner sc) {
         System.out.print("Digite a chave a ser pesquisada [Digite 0 para encerrar]: ");
         int chave = sc.nextInt();
 

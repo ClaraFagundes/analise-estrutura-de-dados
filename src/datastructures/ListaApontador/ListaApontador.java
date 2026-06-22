@@ -4,8 +4,11 @@ import common.Perfume;
 import entities.Cronometro;
 import entities.EstruturaDeDados;
 import entities.enums.TipoInsercao;
+import entities.Util;
+import entities.Cronometro;
 
 public class ListaApontador implements EstruturaDeDados {
+    private Cronometro cronometro;
 
     private class Nodo {
         Perfume Item;
@@ -92,19 +95,26 @@ public class ListaApontador implements EstruturaDeDados {
     }
 
     public Perfume pesquisa(Perfume item) {
+
         comparacoes = 0;
+        cronometro = new Cronometro();
+        cronometro.iniciar();
         Nodo aux = Primeiro.Proximo;
 
         while (aux != null) {
             comparacoes++;
             if (aux.Item.getChave() == item.getChave()) {
+                cronometro.finalizar();
                 return aux.Item;
             }
             aux = aux.Proximo;
         }
+        cronometro.finalizar();
 
         return null;
     }
+
+    public Cronometro getCronometro() { return cronometro; }
 
     public int getComparacoes() {
         return comparacoes;
@@ -118,6 +128,7 @@ public class ListaApontador implements EstruturaDeDados {
     public String imprimirPesquisa(Perfume item) {
         Perfume perfume = pesquisa(item);
 
-        return "Lista Apontador [Insere " + tipoInsercao.toString().toLowerCase() + "]: "+ perfume + " | Quantidade de comaparações: " + getComparacoes();
+        return "Lista Apontador: "+ perfume + " | Quantidade de comparações: "
+                + getComparacoes() + " | Tempo de execução: " + getCronometro();
     }
 }

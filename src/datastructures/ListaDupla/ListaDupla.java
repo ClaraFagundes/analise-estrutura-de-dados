@@ -6,6 +6,7 @@ import entities.EstruturaDeDados;
 import entities.enums.TipoInsercao;
 
 public class ListaDupla implements EstruturaDeDados {
+    private Cronometro cronometro;
 
     private class Nodo {
         Perfume Item;
@@ -60,18 +61,24 @@ public class ListaDupla implements EstruturaDeDados {
 
     public Perfume pesquisa(Perfume item) {
         comparacoes = 0;
+        cronometro = new Cronometro();
+        cronometro.iniciar();
         Nodo aux = Primeiro;
 
         while (aux != null) {
             comparacoes++;
             if (aux.Item.getChave() == item.getChave()) {
+                cronometro.finalizar();
                 return aux.Item;
             }
             aux = aux.Proximo;
         }
+        cronometro.finalizar();
 
         return null;
     }
+
+    public Cronometro getCronometro() { return cronometro; }
 
     public int getComparacoes() {
         return comparacoes;
@@ -85,6 +92,7 @@ public class ListaDupla implements EstruturaDeDados {
     public String imprimirPesquisa(Perfume item) {
         Perfume perfume = pesquisa(item);
 
-        return "Lista Dupla [Insere " + tipoInsercao.toString().toLowerCase() + "]: " + perfume + " | Quantidade de comparações: " + getComparacoes();
+        return "Lista Dupla: " + perfume + " | Quantidade de comparações: " + getComparacoes()
+                + " | Tempo de execução: " + getCronometro();
     }
 }

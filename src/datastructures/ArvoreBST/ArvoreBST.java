@@ -8,6 +8,7 @@ import entities.EstruturaDeDados;
 public class ArvoreBST implements EstruturaDeDados {
     protected Nodo T;
     protected long comparacoes = 0;
+    private Cronometro cronometro;
 
     public ArvoreBST() {
         T = null;
@@ -33,7 +34,11 @@ public class ArvoreBST implements EstruturaDeDados {
     }
 
     public Nodo pesquisa(Perfume item) {
-        return pesquisa(T, item);
+        cronometro = new Cronometro();
+        cronometro.iniciar();
+        Nodo resultado =  pesquisa(T, item);
+        cronometro.finalizar();
+        return resultado;
     }
 
     public Nodo pesquisa(Nodo T, Perfume item) {
@@ -52,6 +57,8 @@ public class ArvoreBST implements EstruturaDeDados {
             return T;
         }
     }
+
+    public Cronometro getCronometro() { return cronometro; }
 
     public Nodo Remove(Nodo T, Perfume X) {
         if (T == null) return T;
@@ -171,6 +178,7 @@ public class ArvoreBST implements EstruturaDeDados {
     public String imprimirPesquisa(Perfume item) {
         Nodo nodo = pesquisa(item);
 
-        return "BST: " + nodo.getItem() + " | Quantidade de comaparações: " + getComparacoes();
+        return "BST: " + nodo.getItem() + " | Quantidade de comparações: " + getComparacoes() +
+                " | Tempo de execução: " + getCronometro();
     }
 }

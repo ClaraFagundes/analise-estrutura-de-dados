@@ -11,6 +11,7 @@ public class TArvoreAVL implements EstruturaDeDados {
     private TNodo p;
     private long comparacoes = 0;
     private long rotacoes = 0;
+    private Cronometro cronometro;
 
     public TArvoreAVL() {
         T = null;
@@ -51,16 +52,22 @@ public class TArvoreAVL implements EstruturaDeDados {
     }
 
     public TNodo pesquisa(Perfume item) {
-        return pesquisa(T, item);
+        cronometro = new Cronometro();
+        cronometro.iniciar();
+        TNodo resultado =  pesquisa(T, item);
+        cronometro.finalizar();
+        return resultado;
     }
 
     public TNodo pesquisa(TNodo T, Perfume item) {
+
         if (T == null) {
             return T;
         } else {
 
-            if (item.getChave() == T.item.getChave())
+            if (item.getChave() == T.item.getChave()){
                 return T;
+            }
             else if (item.getChave() < T.item.getChave()) {
                 comparacoes++;
                 T = pesquisa(T.esq, item);
@@ -71,6 +78,8 @@ public class TArvoreAVL implements EstruturaDeDados {
         }
         return T;
     }
+
+    public Cronometro getCronometro() { return cronometro; }
 
     public void AVL(TNodo T) {
         if (T != null) {
@@ -305,6 +314,7 @@ public class TArvoreAVL implements EstruturaDeDados {
     public String imprimirPesquisa(Perfume item) {
         TNodo nodo = pesquisa(item);
 
-        return "\nAVL: " + nodo.getItem() + " | Quantidade de comaparações: " + getComparacoes() + " | Rotações: " + getRotacoes();
+        return "\nAVL: " + nodo.getItem() + " | Quantidade de comaparações: " + getComparacoes() + " | Rotações: " + getRotacoes()
+                + " | Tempo de execução: " + getCronometro();
     }
 }
