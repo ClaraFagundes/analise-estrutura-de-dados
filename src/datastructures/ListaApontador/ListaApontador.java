@@ -1,11 +1,11 @@
 package datastructures.ListaApontador;
 
 import common.Perfume;
-import datastructures.ArvoreBST.Nodo;
-import entities.DataStructure;
+import entities.Cronometro;
+import entities.EstruturaDeDados;
 import entities.enums.TipoInsercao;
 
-public class ListaApontador implements DataStructure {
+public class ListaApontador implements EstruturaDeDados {
 
     private class Nodo {
         Perfume Item;
@@ -35,8 +35,7 @@ public class ListaApontador implements DataStructure {
     //Você pode escolher o tipo de inserção ao criar a lista, por exemplo: new ListaAPontador(TipoInsercao.INICIO);
     public void insere(Perfume item) {
         if (tipoInsercao == TipoInsercao.INICIO) InsereInicio(item);
-        else if (tipoInsercao == TipoInsercao.FINAL) InsereFinal(item);
-        else InsereOrdenado(item);
+        else InsereFinal(item);
     }
 
     public void InsereInicio(Perfume item) {
@@ -118,6 +117,7 @@ public class ListaApontador implements DataStructure {
 
     public String imprimirPesquisa(Perfume item) {
         Perfume perfume = pesquisa(item);
+
         return "Lista Apontador [Insere " + tipoInsercao.toString().toLowerCase() + "]: "+ perfume + " | Quantidade de comaparações: " + getComparacoes();
     }
 }

@@ -1,9 +1,10 @@
 package datastructures.ArvoreAVL;
 
 import common.Perfume;
-import entities.DataStructure;
+import entities.Cronometro;
+import entities.EstruturaDeDados;
 
-public class TArvoreAVL implements DataStructure {
+public class TArvoreAVL implements EstruturaDeDados {
 
     public TNodo T;
     private int h;
@@ -303,6 +304,7 @@ public class TArvoreAVL implements DataStructure {
 
     public String imprimirPesquisa(Perfume item) {
         TNodo nodo = pesquisa(item);
+
         return "\nAVL: " + nodo.getItem() + " | Quantidade de comaparações: " + getComparacoes() + " | Rotações: " + getRotacoes();
     }
 }

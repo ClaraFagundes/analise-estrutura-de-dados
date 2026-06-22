@@ -2,7 +2,8 @@ import datastructures.ArvoreAVL.TArvoreAVL;
 import datastructures.ArvoreBST.ArvoreBST;
 import datastructures.ListaApontador.ListaApontador;
 import datastructures.ListaArranjo.ListaArranjo;
-import entities.DataStructure;
+import datastructures.ListaDupla.ListaDupla;
+import entities.EstruturaDeDados;
 import entities.Util;
 import entities.enums.TipoInsercao;
 
@@ -13,39 +14,47 @@ public class Programa {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        ArrayList<DataStructure> dataStructures = new ArrayList<>();
+        ArrayList<EstruturaDeDados> estruturaDeDados = new ArrayList<>();
 
         int quantidadeDeDados = 1000;
 
+        //ÁRVORE AVL
         TArvoreAVL arvoreAVL = new TArvoreAVL();
-        dataStructures.add(arvoreAVL);
+        estruturaDeDados.add(arvoreAVL);
 
+        //ÁRVORE BST
         ArvoreBST arvoreBST = new ArvoreBST();
-        dataStructures.add(arvoreBST);
+        estruturaDeDados.add(arvoreBST);
 
-        //Há 3 variáveis para listas por conta da forma de inserção
+        //LISTA APONTADOR
+        //Há 2 variáveis para listas por conta da forma de inserção
         ListaApontador listaApontadorInicio = new ListaApontador(TipoInsercao.INICIO);
-        dataStructures.add(listaApontadorInicio);
+        estruturaDeDados.add(listaApontadorInicio);
 
         ListaApontador listaApontadorFinal = new ListaApontador(TipoInsercao.FINAL);
-        dataStructures.add(listaApontadorFinal);
+        estruturaDeDados.add(listaApontadorFinal);
 
-        ListaApontador listaApontadorOrdenado = new ListaApontador(TipoInsercao.ORDENADO);
-        dataStructures.add(listaApontadorOrdenado);
-
+        //LISTA ARRANJO
         //Tive que colocar a quantidade de dados no construtor por conta que tem que inicializar o array...
         ListaArranjo listaArranjoInicio = new ListaArranjo(TipoInsercao.INICIO, quantidadeDeDados);
-        dataStructures.add(listaArranjoInicio);
+        estruturaDeDados.add(listaArranjoInicio);
 
         ListaArranjo listaArranjoFinal = new ListaArranjo(TipoInsercao.FINAL, quantidadeDeDados);
-        dataStructures.add(listaArranjoFinal);
+        estruturaDeDados.add(listaArranjoFinal);
+
+        //LISTA DUPLAMENTE ENCADEADA
+        ListaDupla listaDuplaInicio = new ListaDupla(TipoInsercao.INICIO);
+        estruturaDeDados.add(listaDuplaInicio);
+
+        ListaDupla listaDuplaFinal = new ListaDupla(TipoInsercao.FINAL);
+        estruturaDeDados.add(listaDuplaFinal);
 
         String arquivo = "src/common/fragrantica_dataset.csv";
 
-        for (DataStructure ds : dataStructures) {
+        for (EstruturaDeDados ds : estruturaDeDados) {
             Util.armazenar(ds, arquivo, quantidadeDeDados);
         }
 
-        Util.pesquisar(dataStructures);
+        Util.pesquisar(estruturaDeDados);
     }
 }

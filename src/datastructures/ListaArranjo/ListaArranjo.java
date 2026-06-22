@@ -1,10 +1,11 @@
 package datastructures.ListaArranjo;
 
 import common.Perfume;
-import entities.DataStructure;
+import entities.Cronometro;
+import entities.EstruturaDeDados;
 import entities.enums.TipoInsercao;
 
-public class ListaArranjo implements DataStructure {
+public class ListaArranjo implements EstruturaDeDados {
     private final int Tmax;
     private Perfume[] Item;
     private int Primeiro;
@@ -26,7 +27,7 @@ public class ListaArranjo implements DataStructure {
     //Você pode escolher o tipo de inserção ao criar a lista, por exemplo: new ListaAPontador(TipoInsercao.INICIO);
     public void insere(Perfume item) {
         if (tipoInsercao == TipoInsercao.INICIO) InsereInicio(item);
-        else if (tipoInsercao == TipoInsercao.FINAL) InsereFinal(item);
+        else InsereFinal(item);
     }
 
     public void InsereInicio(Perfume item) {
@@ -95,8 +96,8 @@ public class ListaArranjo implements DataStructure {
 
         if (!Vazia()) {
             for(Perfume perfume : Item) {
-                if (perfume.getChave() == item.getChave()) return perfume;
                 comparacoes++;
+                if (perfume.getChave() == item.getChave()) return perfume;
             }
         }
         return null;
@@ -127,6 +128,7 @@ public class ListaArranjo implements DataStructure {
 
     public String imprimirPesquisa(Perfume item) {
         Perfume perfume = PesquisaSequencial(item);
+
         return "Lista Arranjo [Insere " + tipoInsercao.toString().toLowerCase() + "]: "+ perfume + " | Quantidade de comaparações: " + getComparacoes();
     }
 }

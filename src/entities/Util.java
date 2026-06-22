@@ -1,9 +1,6 @@
 package entities;
 
-import datastructures.ArvoreAVL.TArvoreAVL;
 import common.Perfume;
-import datastructures.ArvoreAVL.TNodo;
-import datastructures.ArvoreBST.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -16,7 +13,7 @@ public class Util {
     private static Scanner sc = new Scanner(System.in);
 
     //Serve simplesmente para armazenar os items do arquivo em uma estrutura de dados qualquer, ela também retorna o cronômetro com o tempo que demorou para executar esse armazenamento
-    public static Cronometro armazenar(DataStructure estruturaDeDados, String arquivo, int quantidade) throws FileNotFoundException {
+    public static Cronometro armazenar(EstruturaDeDados estruturaDeDados, String arquivo, int quantidade) throws FileNotFoundException {
         Cronometro cronometro = new Cronometro();
         cronometro.iniciar();
 
@@ -62,15 +59,15 @@ public class Util {
     }
 
     //Você joga um ArrayList de estruturas de dados armazenadas e ele retorna o resultado da pesquisa de todos
-    public static void pesquisar(ArrayList<DataStructure> dataStructures) {
+    public static void pesquisar(ArrayList<EstruturaDeDados> estruturaDeDados) {
         System.out.print("Digite a chave a ser pesquisada [Digite 0 para encerrar]: ");
         int chave = sc.nextInt();
 
         while (chave != 0) {
             Perfume item = new Perfume(chave);
 
-            for (DataStructure ds : dataStructures) {
-                System.out.println(ds.imprimirPesquisa(item));
+            for (EstruturaDeDados ds : estruturaDeDados) {
+                System.out.println(ds.imprimirPesquisa(item) + "\n");
             }
 
             System.out.print("\nDigite a chave a ser pesquisada [Digite 0 para encerrar]: ");
