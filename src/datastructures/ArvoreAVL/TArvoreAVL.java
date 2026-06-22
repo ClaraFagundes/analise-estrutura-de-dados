@@ -301,4 +301,8 @@ public class TArvoreAVL implements DataStructure {
         );
     }
 
+    public String imprimirPesquisa(Perfume item) {
+        TNodo nodo = pesquisa(item);
+        return "\nAVL: " + nodo.getItem() + " | Quantidade de comaparações: " + getComparacoes() + " | Rotações: " + getRotacoes();
+    }
 }

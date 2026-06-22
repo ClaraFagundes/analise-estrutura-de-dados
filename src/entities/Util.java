@@ -7,6 +7,7 @@ import datastructures.ArvoreBST.*;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.io.FileReader;
 import java.io.BufferedReader;
@@ -14,6 +15,7 @@ import java.io.BufferedReader;
 public class Util {
     private static Scanner sc = new Scanner(System.in);
 
+    //Serve simplesmente para armazenar os items do arquivo em uma estrutura de dados qualquer, ela também retorna o cronômetro com o tempo que demorou para executar esse armazenamento
     public static Cronometro armazenar(DataStructure estruturaDeDados, String arquivo, int quantidade) throws FileNotFoundException {
         Cronometro cronometro = new Cronometro();
         cronometro.iniciar();
@@ -59,22 +61,16 @@ public class Util {
         return cronometro;
     }
 
-    public static void pesquisar(TArvoreAVL AVL, ArvoreBST BST) {
+    //Você joga um ArrayList de estruturas de dados armazenadas e ele retorna o resultado da pesquisa de todos
+    public static void pesquisar(ArrayList<DataStructure> dataStructures) {
         System.out.print("Digite a chave a ser pesquisada [Digite 0 para encerrar]: ");
         int chave = sc.nextInt();
 
         while (chave != 0) {
             Perfume item = new Perfume(chave);
 
-            TNodo pesquisaAVL = AVL.pesquisa(AVL.T, item);
-            Nodo pesquisaBST = BST.pesquisa(BST.getRaiz(), item);
-
-            if (pesquisaBST != null && pesquisaAVL != null) {
-                System.out.println("\nAVL: " + pesquisaAVL.getItem() + " | Quantidade de comaparações: " + AVL.getComparacoes()
-                        + " | Rotações: " + AVL.getRotacoes());
-                System.out.println("BST: " + pesquisaBST.getItem() + " | Quantidade de comaparações: " + BST.getComparacoes());
-            } else {
-                System.out.println("árvore vazia ...");
+            for (DataStructure ds : dataStructures) {
+                System.out.println(ds.imprimirPesquisa(item));
             }
 
             System.out.print("\nDigite a chave a ser pesquisada [Digite 0 para encerrar]: ");

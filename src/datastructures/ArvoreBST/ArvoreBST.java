@@ -2,6 +2,7 @@ package datastructures.ArvoreBST;
 
 
 import common.Perfume;
+import datastructures.ArvoreAVL.TNodo;
 import entities.DataStructure;
 
 public class ArvoreBST implements DataStructure {
@@ -165,5 +166,10 @@ public class ArvoreBST implements DataStructure {
 
     public long getComparacoes() {
         return comparacoes;
+    }
+
+    public String imprimirPesquisa(Perfume item) {
+        Nodo nodo = pesquisa(item);
+        return "BST: " + nodo.getItem() + " | Quantidade de comaparações: " + getComparacoes();
     }
 }

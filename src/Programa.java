@@ -1,22 +1,41 @@
 import datastructures.ArvoreAVL.TArvoreAVL;
 import datastructures.ArvoreBST.ArvoreBST;
+import datastructures.ListaApontador.ListaApontador;
 import entities.DataStructure;
 import entities.Util;
+import entities.enums.TipoInsercao;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 
 public class Programa {
 
     public static void main(String[] args) throws FileNotFoundException {
 
-        TArvoreAVL arvoreAVL10000 = new TArvoreAVL();
-        ArvoreBST arvoreBST10000 = new ArvoreBST();
+        ArrayList<DataStructure> dataStructures = new ArrayList<>();
+
+        TArvoreAVL arvoreAVL = new TArvoreAVL();
+        dataStructures.add(arvoreAVL);
+
+        ArvoreBST arvoreBST = new ArvoreBST();
+        dataStructures.add(arvoreBST);
+
+        ListaApontador listaApontadorInicio = new ListaApontador(TipoInsercao.INICIO);
+        dataStructures.add(listaApontadorInicio);
+
+        ListaApontador listaApontadorFinal = new ListaApontador(TipoInsercao.FINAL);
+        dataStructures.add(listaApontadorFinal);
+
+        ListaApontador listaApontadorOrdenado = new ListaApontador(TipoInsercao.ORDENADO);
+        dataStructures.add(listaApontadorOrdenado);
+
 
         String arquivo = "src/common/fragrantica_dataset.csv";
 
-        Util.armazenar((DataStructure) arvoreAVL10000, arquivo, 10000);
-        Util.armazenar((DataStructure) arvoreBST10000, arquivo, 10000);
+        for (DataStructure ds : dataStructures) {
+            Util.armazenar(ds, arquivo, 1000);
+        }
 
-        Util.pesquisar(arvoreAVL10000, arvoreBST10000);
+        Util.pesquisar(dataStructures);
     }
 }

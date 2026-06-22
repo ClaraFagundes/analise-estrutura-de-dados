@@ -1,5 +1,6 @@
 package common;
 
+//Agora TInfo virou Perfume e todas estruturas de dados armazenam Perfume
 public class Perfume {
     private int chave;
     private String nome;
