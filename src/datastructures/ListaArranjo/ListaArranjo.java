@@ -117,17 +117,24 @@ public class ListaArranjo implements EstruturaDeDados {
         return comparacoes;
     }
 
-    public int[] PesquisaBinaria(int chave) {
+    public Perfume PesquisaBinaria(Perfume item) {
+
         int comp = 0;
-        if (Vazia()) return new int[]{-1, 0};
+        cronometro.iniciar();
+        if (Vazia()) return null;
         int inic = 0, fim = Ultimo - 1, meio = (inic + fim) / 2;
-        while ((Item[meio].getChave() != chave) && (inic != fim)) {
-            if (chave > Item[meio].getChave()) inic = meio + 1; else fim = meio;
+        while ((Item[meio].getChave() != item.getChave()) && (inic != fim)) {
+            if (item.getChave() > Item[meio].getChave()) inic = meio + 1; else fim = meio;
             comp++; meio = (inic + fim) / 2;
         }
         comp++;
-        if (Item[meio].getChave() == chave) return new int[]{meio, comp};
-        return new int[]{-1, comp};
+        if (Item[meio].getChave() == item.getChave()){
+            cronometro.finalizar();
+            return Item[meio];
+        }
+        cronometro.finalizar();
+        return null;
+
     }
 
     public void Ordena() {
@@ -138,6 +145,13 @@ public class ListaArranjo implements EstruturaDeDados {
 
     public String imprimirPesquisa(Perfume item) {
         Perfume perfume = PesquisaSequencial(item);
+
+        return "Lista Arranjo: "+ perfume + " | Quantidade de comparações: " + getComparacoes() +
+                " | Tempo de execução: " + getCronometro();
+    }
+
+    String imprimirPesquisaBinaria(Perfume item){
+        Perfume perfume = PesquisaBinaria(item);
 
         return "Lista Arranjo: "+ perfume + " | Quantidade de comparações: " + getComparacoes() +
                 " | Tempo de execução: " + getCronometro();
