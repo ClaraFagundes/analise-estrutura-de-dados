@@ -24,6 +24,8 @@ public class TesteDesempenho {
 
         Scanner sc = new Scanner(System.in);
 
+        String arquivo = "src/common/fragrantica_dataset.csv";
+
         while (true) {
             System.out.println("\n===== MENU =====");
             System.out.println("1 - Testar com 1.000 registros");
@@ -40,7 +42,7 @@ public class TesteDesempenho {
             if (opcao == 0)
                 break;
 
-            int limite = 0;
+            int limite;
 
             switch (opcao) {
                 case 1:
@@ -63,23 +65,22 @@ public class TesteDesempenho {
                     System.out.print("\nDigite o limite de registros: \n1- 1.000\n2- 10.000\n3- 50.000\n4- 91.134\n");
                     System.out.print("Opção: ");
                     limite = sc.nextInt();
-                    //sc.close();//teste para ver se é a entrada que está sendo consumida
-                    executarPesquisas(limite, sc);
+
+                    executarPesquisas(arquivo, limite);
                     break;
                 default:
                     System.out.println("Opção inválida.");
                     continue;
             }
 
-            executarTeste(limite);
+//            executarTeste(arquivo, limite);
         }
 
         sc.close();
     }
 
-    public static void executarTeste(int limite) {
+    public static void executarTeste(String arquivo, int limite) {
         try {
-            String arquivo = "src/common/fragrantica_dataset.csv";
 
             ArvoreBST bst = new ArvoreBST();
             TArvoreAVL avl = new TArvoreAVL();
@@ -117,14 +118,18 @@ public class TesteDesempenho {
         }
     }
 
-    public static void executarPesquisas(int limite, Scanner sc){
+    public static void executarPesquisas(String arquivo, int limite) {
         try {
-            String arquivo = "src/common/fragrantica_dataset.csv";
 
-            if(limite == 1){limite = 1000;}
-            else if(limite == 2){limite = 10000;}
-            else if(limite == 3){limite = 50000;}
-            else{limite = 91134;}
+            if (limite == 1) {
+                limite = 1000;
+            } else if (limite == 2) {
+                limite = 10000;
+            } else if (limite == 3) {
+                limite = 50000;
+            } else {
+                limite = 91134;
+            }
 
             ArvoreBST bst = new ArvoreBST();
             TArvoreAVL avl = new TArvoreAVL();
@@ -136,19 +141,8 @@ public class TesteDesempenho {
             PilhaApontador PApontador = new PilhaApontador();
             PilhaArranjo PArranjo = new PilhaArranjo();
 
-            Util.armazenar(bst, arquivo, limite);
-            Util.armazenar(avl, arquivo, limite);
-            Util.armazenar(LArranjo, arquivo, limite);
-            Util.armazenar(LApontador, arquivo, limite);
-            Util.armazenar(LDupla, arquivo, limite);
-            Util.armazenar(FApontador, arquivo, limite);
-            Util.armazenar(FArranjo, arquivo, limite);
-            Util.armazenar(PApontador, arquivo, limite);
-            Util.armazenar(PArranjo, arquivo, limite);
-
-            System.out.println("\n===== RESULTADOS DA PESQUISA=====");
-
             ArrayList<EstruturaDeDados> estruturas = new ArrayList<>();
+
             estruturas.add(bst);
             estruturas.add(avl);
             estruturas.add(LArranjo);
@@ -159,7 +153,14 @@ public class TesteDesempenho {
             estruturas.add(PApontador);
             estruturas.add(PArranjo);
 
-            Util.pesquisar(estruturas, sc);
+            for (EstruturaDeDados estruturaDeDados : estruturas) {
+                Util.armazenar(estruturaDeDados, arquivo, limite);
+            }
+
+            System.out.println("\n===== RESULTADOS DA PESQUISA=====");
+
+
+            Util.pesquisar(estruturas);
 
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());

@@ -62,6 +62,6 @@ public class Programa {
             Util.armazenar(ds, arquivo, quantidadeDeDados);
         }
 
-        Util.pesquisar(estruturaDeDados,sc);
+        Util.pesquisar(estruturaDeDados);
     }
 }

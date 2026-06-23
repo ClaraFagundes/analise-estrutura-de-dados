@@ -65,7 +65,7 @@ public class PilhaArranjo implements EstruturaDeDados {
     public String imprimirPesquisa(Perfume item) {
         Perfume perfume = pesquisa(item);
 
-        return "Lista Dupla: " + perfume + " | Quantidade de comparações: " + getComparacoes()
+        return "Pilha Arranjo: " + perfume + " | Quantidade de comparações: " + getComparacoes()
                 + " | Tempo de execução: " + getCronometro();
     }
 

@@ -82,7 +82,7 @@ public class FilaArranjo implements EstruturaDeDados {
     public String imprimirPesquisa(Perfume item) {
         Perfume perfume = pesquisa(item);
 
-        return "Lista Apontador: "+ perfume + " | Quantidade de comparações: "
+        return "Fila Arranjo: "+ perfume + " | Quantidade de comparações: "
                 + getComparacoes() + " | Tempo de execução: " + getCronometro();
     }
 
