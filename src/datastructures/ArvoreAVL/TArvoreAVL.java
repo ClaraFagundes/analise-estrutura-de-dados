@@ -314,7 +314,7 @@ public class TArvoreAVL implements EstruturaDeDados {
     public String imprimirPesquisa(Perfume item) {
         TNodo nodo = pesquisa(item);
 
-        return "\nAVL: " + nodo.getItem() + " | Quantidade de comaparações: " + getComparacoes() + " | Rotações: " + getRotacoes()
+        return "AVL: " + nodo.getItem() + " | Quantidade de comaparações: " + getComparacoes() + " | Rotações: " + getRotacoes()
                 + " | Tempo de execução: " + getCronometro();
     }
 }
