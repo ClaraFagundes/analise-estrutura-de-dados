@@ -12,6 +12,7 @@ public class ListaArranjo implements EstruturaDeDados {
     private int Primeiro;
     private int Ultimo;
     private int comparacoes;
+    private int comp;
     private TipoInsercao tipoInsercao;
     private Cronometro cronometro;
 
@@ -117,9 +118,13 @@ public class ListaArranjo implements EstruturaDeDados {
         return comparacoes;
     }
 
+    public int getComp() {
+        return comp;
+    }//comparações da binária
+
     public Perfume PesquisaBinaria(Perfume item) {
 
-        int comp = 0;
+        comp = 0;
         cronometro.iniciar();
         if (Vazia()) return null;
         int inic = 0, fim = Ultimo - 1, meio = (inic + fim) / 2;
@@ -146,14 +151,14 @@ public class ListaArranjo implements EstruturaDeDados {
     public String imprimirPesquisa(Perfume item) {
         Perfume perfume = PesquisaSequencial(item);
 
-        return "Lista Arranjo: "+ perfume + " | Quantidade de comparações: " + getComparacoes() +
-                " | Tempo de execução: " + getCronometro();
+        return "Lista Arranjo (Sequencial) : "+ perfume + " | Quantidade de comparações: " + getComparacoes() +
+                " | Tempo de execução: " + getCronometro() + imprimirPesquisaBinaria(item);
     }
 
-    String imprimirPesquisaBinaria(Perfume item){
+    public String imprimirPesquisaBinaria(Perfume item){
         Perfume perfume = PesquisaBinaria(item);
 
-        return "Lista Arranjo: "+ perfume + " | Quantidade de comparações: " + getComparacoes() +
+        return "\nLista Arranjo (Binária) : "+ perfume + " | Quantidade de comparações: " + getComp() +
                 " | Tempo de execução: " + getCronometro();
     }
 }
