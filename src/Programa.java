@@ -3,9 +3,14 @@ import datastructures.ArvoreBST.ArvoreBST;
 import datastructures.ListaApontador.ListaApontador;
 import datastructures.ListaArranjo.ListaArranjo;
 import datastructures.ListaDupla.ListaDupla;
+import datastructures.PilhaApontador.PilhaApontador;
+import datastructures.PilhaArranjo.PilhaArranjo;
+import datastructures.FilaApontador.FilaApontador;
+import datastructures.FilaArranjo.FilaArranjo;
 import entities.EstruturaDeDados;
 import entities.Util;
 import entities.enums.TipoInsercao;
+import java.util.Scanner;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -13,6 +18,8 @@ import java.util.ArrayList;
 public class Programa {
 
     public static void main(String[] args) throws FileNotFoundException {
+
+        Scanner sc = new Scanner(System.in);
 
         ArrayList<EstruturaDeDados> estruturaDeDados = new ArrayList<>();
 
@@ -55,6 +62,6 @@ public class Programa {
             Util.armazenar(ds, arquivo, quantidadeDeDados);
         }
 
-        Util.pesquisar(estruturaDeDados);
+        Util.pesquisar(estruturaDeDados,sc);
     }
 }
