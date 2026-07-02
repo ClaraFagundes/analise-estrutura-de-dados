@@ -19,39 +19,57 @@ public class Util {
 
         String linha;
         int contador = 0;
+        int linhasPuladas = 0;
+        int numeroLinhaArquivo = 1; // 1 = cabeçalho
 
         try (BufferedReader br = new BufferedReader(new FileReader(arquivo))) {
-            linha = br.readLine();
+            br.readLine(); // descarta o cabeçalho
 
-            while (linha != null && contador < quantidade) {
-                linha = br.readLine();
+            while (contador < quantidade && (linha = br.readLine()) != null) {
+                numeroLinhaArquivo++;
 
-                String dados[] = linha.split(";");
-                int id = Integer.parseInt(dados[0]);
-                String nome = dados[1];
-                String brand = dados[2];
-                String country = dados[3];
-                String sexo = dados[4];
-                double ratingVAL = Double.parseDouble(dados[5].replace(",", "."));
-                int ratingCountry = Integer.parseInt(dados[6]);
-                double ano = Double.parseDouble(dados[7]);
-                String top = dados[8];
-                String midlle = dados[9];
-                String base = dados[10];
-                String perfurmer = dados[11];
-                String mainaccon = dados[12];
+                try {
+                    String dados[] = linha.split(";");
 
-                Perfume perfume = new Perfume(id, nome, brand, country, sexo, ratingVAL, ratingCountry, ano, top, midlle, base, perfurmer, mainaccon);
+                    if (dados.length < 13) {
+                        throw new ArrayIndexOutOfBoundsException(
+                                "Linha com " + dados.length + " campos, esperado >= 13");
+                    }
 
-                estruturaDeDados.insere(perfume);
+                    int id = Integer.parseInt(dados[0]);
+                    String nome = dados[1];
+                    String brand = dados[2];
+                    String country = dados[3];
+                    String sexo = dados[4];
+                    double ratingVAL = Double.parseDouble(dados[5].replace(",", "."));
+                    int ratingCountry = Integer.parseInt(dados[6]);
+                    double ano = Double.parseDouble(dados[7]);
+                    String top = dados[8];
+                    String midlle = dados[9];
+                    String base = dados[10];
+                    String perfurmer = dados[11];
+                    String mainaccon = dados[12];
 
-                contador++;
+                    Perfume perfume = new Perfume(id, nome, brand, country, sexo, ratingVAL,
+                            ratingCountry, ano, top, midlle, base, perfurmer, mainaccon);
+                    estruturaDeDados.insere(perfume);
+                    contador++;
+
+                } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+                    linhasPuladas++;
+                    System.err.printf("[LINHA IGNORADA] arquivo=%s linha=%d motivo=%s%n",
+                            arquivo, numeroLinhaArquivo, e.getMessage());
+                }
             }
 
         } catch (FileNotFoundException e) {
             throw new FileNotFoundException("O arquivo não foi encontrado!");
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+
+        if (linhasPuladas > 0) {
+            System.out.printf("AVISO: %d linha(s) malformada(s) ignorada(s) em %s%n", linhasPuladas, arquivo);
         }
 
         cronometro.finalizar();
