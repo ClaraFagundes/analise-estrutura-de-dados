@@ -1,7 +1,6 @@
 package datastructures.ListaArranjo;
 
 import common.Perfume;
-import datastructures.ListaApontador.ListaApontador;
 import entities.Cronometro;
 import entities.EstruturaDeDados;
 import entities.enums.TipoInsercao;
@@ -155,5 +154,184 @@ public class ListaArranjo implements EstruturaDeDados {
 
         return "Lista Arranjo: "+ perfume + " | Quantidade de comparações: " + getComparacoes() +
                 " | Tempo de execução: " + getCronometro();
+    }
+
+    // ===================== SUPORTE PARA ORDENAÇÃO =====================
+
+    private void swap(int one, int two) {
+        Perfume temp = Item[one];
+        Item[one] = Item[two];
+        Item[two] = temp;
+    }
+
+    // ===================== ALGORITMOS DE ORDENAÇÃO =====================
+
+    public void bubbleSort() {
+        int in, out;
+
+        for (out = Ultimo - 1; out >= Primeiro + 1; out--)
+            for (in = Primeiro; in < out; in++)
+                if (Item[in].getChave() > Item[in+1].getChave())
+                    swap(in, in+1);
+    }
+
+    public void selectionSort() {
+        int out, in, min;
+
+        for (out = Primeiro; out < Ultimo - 1; out++) {
+            min = out;
+            for (in = out + 1; in < Ultimo - 1; in++)
+                if (Item[in].getChave() < Item[min].getChave())
+                    min = in;
+            swap(out, min);
+        }
+    }
+
+    public void insertionSort() {
+        int in, out;
+
+        for (out = Primeiro + 1; out < Ultimo; out++) {
+            Perfume temp = Item[out];
+            in = out;
+            while (in > Primeiro && Item[in-1].getChave() >= temp.getChave()) {
+                Item[in] = Item[in-1];
+                --in;
+            }
+            Item[in] = temp;
+        }
+    }
+
+    public void shellSort() {
+        int inner, outer;
+        Perfume temp;
+        int nElems = Ultimo - Primeiro;
+
+        int h = 1;
+        while (h <= nElems/3)
+            h = h*3 + 1;
+
+        while (h > 0) {
+            for (outer = Primeiro + h; outer < Ultimo; outer++) {
+                temp = Item[outer];
+                inner = outer;
+
+                while (inner > Primeiro + h - 1 && Item[inner-h].getChave() >= temp.getChave()) {
+                    Item[inner] = Item[inner-h];
+                    inner -= h;
+                }
+
+                Item[inner] = temp;
+            }
+            h = (h-1) / 3;
+        }
+    }
+
+    public void mergeSort() {
+        Perfume[] workSpace = new Perfume[Tmax];
+        recMergeSort(workSpace, Primeiro, Ultimo - 1);
+    }
+
+    public void recMergeSort(Perfume[] workSpace, int lowerBound, int upperBound) {
+        if (lowerBound == upperBound)
+            return;
+        else {
+            int mid = (lowerBound + upperBound) / 2;
+            recMergeSort(workSpace, lowerBound, mid);
+            recMergeSort(workSpace, mid + 1, upperBound);
+            merge(workSpace, lowerBound, mid + 1, upperBound);
+        }
+    }
+
+    public void merge(Perfume[] workSpace, int lowPtr, int highPtr, int upperBound) {
+        int j = lowPtr;
+        int lowerBound = lowPtr;
+        int mid = highPtr - 1;
+        int n = upperBound - lowerBound + 1;
+
+        while (lowPtr <= mid && highPtr <= upperBound) {
+            if (Item[lowPtr].getChave() < Item[highPtr].getChave())
+                workSpace[j++] = Item[lowPtr++];
+            else
+                workSpace[j++] = Item[highPtr++];
+        }
+
+        while (lowPtr <= mid)
+            workSpace[j++] = Item[lowPtr++];
+
+        while (highPtr <= upperBound)
+            workSpace[j++] = Item[highPtr++];
+
+        for (j = lowerBound; j < lowerBound + n; j++)
+            Item[j] = workSpace[j];
+    }
+
+    public void quickSort() {
+        recQuickSort(Primeiro, Ultimo - 1);
+    }
+
+    public void recQuickSort(int left, int right) {
+        if (right - left <= 0)
+            return;
+        else {
+            long pivot = Item[right].getChave();
+
+            int partition = partitionIt(left, right, pivot);
+
+            recQuickSort(left, partition - 1);
+            recQuickSort(partition + 1, right);
+        }
+    }
+
+    public int partitionIt(int left, int right, long pivot) {
+        int leftPtr = left - 1;
+        int rightPtr = right;
+
+        while (true) {
+
+            while (Item[++leftPtr].getChave() < pivot)
+                ;
+
+            while (rightPtr > Primeiro && Item[--rightPtr].getChave() > pivot)
+                ;
+
+            if (leftPtr >= rightPtr)
+                break;
+            else
+                swap(leftPtr, rightPtr);
+        }
+
+        swap(leftPtr, right);
+
+        return leftPtr;
+    }
+
+    public void heapSort() {
+        int nElems = Ultimo - Primeiro;
+
+        for (int i = nElems / 2 - 1; i >= 0; i--)
+            heapify(nElems, i);
+
+        for (int i = nElems - 1; i > 0; i--) {
+            swap(Primeiro, Primeiro + i);
+            heapify(i, 0);
+        }
+    }
+
+    public void heapify(int size, int root) {
+
+        int largest = root;
+        int left = 2 * root + 1;
+        int right = 2 * root + 2;
+
+        if (left < size && Item[Primeiro+left].getChave() > Item[Primeiro+largest].getChave())
+            largest = left;
+
+        if (right < size && Item[Primeiro+right].getChave() > Item[Primeiro+largest].getChave())
+            largest = right;
+
+        if (largest != root) {
+            swap(Primeiro+root, Primeiro+largest);
+            heapify(size, largest);
+        }
     }
 }
