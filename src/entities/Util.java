@@ -29,7 +29,7 @@ public class Util {
                 numeroLinhaArquivo++;
 
                 try {
-                    String dados[] = linha.split(";");
+                    String dados[] = linha.split("\\|");
 
                     if (dados.length < 13) {
                         throw new ArrayIndexOutOfBoundsException(
@@ -40,19 +40,44 @@ public class Util {
                     String nome = dados[1];
                     String brand = dados[2];
                     String country = dados[3];
-                    String sexo = dados[4];
-                    double ratingVAL = Double.parseDouble(dados[5].replace(",", "."));
-                    int ratingCountry = Integer.parseInt(dados[6]);
-                    double ano = Double.parseDouble(dados[7]);
+                    String gender = dados[4];
+                    double ratingValue = Double.parseDouble(dados[5].replace(",", "."));
+                    int ratingCount = Integer.parseInt(dados[6]);
+                    double year = Double.parseDouble(dados[7]);
                     String top = dados[8];
-                    String midlle = dados[9];
+                    String middle = dados[9];
                     String base = dados[10];
-                    String perfurmer = dados[11];
-                    String mainaccon = dados[12];
 
-                    Perfume perfume = new Perfume(id, nome, brand, country, sexo, ratingVAL,
-                            ratingCountry, ano, top, midlle, base, perfurmer, mainaccon);
-                    estruturaDeDados.insere(perfume);
+                    String perfumer1 = dados[11];
+                    String perfumer2 = dados[12];
+
+                    String mainaccord1 = dados[13];
+                    String mainaccord2 = dados[14];
+                    String mainaccord3 = dados[15];
+                    String mainaccord4 = dados[16];
+                    String mainaccord5 = dados[17];
+
+                    Perfume perfumeObj = new Perfume(
+                            id,
+                            nome,
+                            brand,
+                            country,
+                            gender,
+                            ratingValue,
+                            ratingCount,
+                            year,
+                            top,
+                            middle,
+                            base,
+                            perfumer1,
+                            perfumer2,
+                            mainaccord1,
+                            mainaccord2,
+                            mainaccord3,
+                            mainaccord4,
+                            mainaccord5
+                    );
+                    estruturaDeDados.insere(perfumeObj);
                     contador++;
 
                 } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {

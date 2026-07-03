@@ -1,42 +1,57 @@
 package common;
 
-//Agora TInfo virou Perfume e todas estruturas de dados armazenam Perfume
+// Agora TInfo virou Perfume e todas estruturas de dados armazenam Perfume
 public class Perfume {
+
     private int chave;
     private String nome;
     private String brand;
     private String country;
-    private String sexo;
-    private double ratingVAL;
-    private int ratingCountry;
-    private double ano;
+    private String gender;
+    private double ratingValue;
+    private int ratingCount;
+    private double year;
     private String top;
-    private String midlle;
+    private String middle;
     private String base;
-    private String perfurmer;
-    private String mainaccon;
+    private String perfumer1;
+    private String perfumer2;
+    private String mainaccord1;
+    private String mainaccord2;
+    private String mainaccord3;
+    private String mainaccord4;
+    private String mainaccord5;
 
-    public Perfume (int chave ){
+    public Perfume(int chave) {
         this.chave = chave;
     }
-    public Perfume(int chave, String nome, String brand, String country, String sexo,
-                 double ratingVAL, int ratingCountry, double ano,
-                 String top, String midlle, String base,
-                 String perfurmer, String mainaccon) {
+
+    public Perfume(int chave, String nome, String brand, String country, String gender,
+                   double ratingValue, int ratingCount, double year,
+                   String top, String middle, String base,
+                   String perfumer1, String perfumer2,
+                   String mainaccord1, String mainaccord2,
+                   String mainaccord3, String mainaccord4,
+                   String mainaccord5) {
 
         this.chave = chave;
         this.nome = nome;
         this.brand = brand;
         this.country = country;
-        this.sexo = sexo;
-        this.ratingVAL = ratingVAL;
-        this.ratingCountry = ratingCountry;
-        this.ano = ano;
+        this.gender = gender;
+        this.ratingValue = ratingValue;
+        this.ratingCount = ratingCount;
+        this.year = year;
         this.top = top;
-        this.midlle = midlle;
+        this.middle = middle;
         this.base = base;
-        this.perfurmer = perfurmer;
-        this.mainaccon = mainaccon;
+        this.perfumer1 = perfumer1;
+        this.perfumer2 = perfumer2;
+        this.mainaccord1 = mainaccord1;
+        this.mainaccord2 = mainaccord2;
+        this.mainaccord3 = mainaccord3;
+        this.mainaccord4 = mainaccord4;
+        this.mainaccord5 = mainaccord5;
     }
 
     public int getChave() {
@@ -63,36 +78,44 @@ public class Perfume {
         this.brand = brand;
     }
 
-    public String getSexo() {
-        return sexo;
+    public String getCountry() {
+        return country;
     }
 
-    public void setSexo(String sexo) {
-        this.sexo = sexo;
+    public void setCountry(String country) {
+        this.country = country;
     }
 
-    public double getRatingVAL() {
-        return ratingVAL;
+    public String getGender() {
+        return gender;
     }
 
-    public void setRatingVAL(double ratingVAL) {
-        this.ratingVAL = ratingVAL;
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 
-    public int getRatingCountry() {
-        return ratingCountry;
+    public double getRatingValue() {
+        return ratingValue;
     }
 
-    public void setRatingCountry(int ratingCountry) {
-        this.ratingCountry = ratingCountry;
+    public void setRatingValue(double ratingValue) {
+        this.ratingValue = ratingValue;
     }
 
-    public double getAno() {
-        return ano;
+    public int getRatingCount() {
+        return ratingCount;
     }
 
-    public void setAno(int ano) {
-        this.ano = ano;
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
+    }
+
+    public double getYear() {
+        return year;
+    }
+
+    public void setYear(double year) {
+        this.year = year;
     }
 
     public String getTop() {
@@ -103,12 +126,12 @@ public class Perfume {
         this.top = top;
     }
 
-    public String getMidlle() {
-        return midlle;
+    public String getMiddle() {
+        return middle;
     }
 
-    public void setMidlle(String midlle) {
-        this.midlle = midlle;
+    public void setMiddle(String middle) {
+        this.middle = middle;
     }
 
     public String getBase() {
@@ -119,28 +142,60 @@ public class Perfume {
         this.base = base;
     }
 
-    public String getPerfurmer() {
-        return perfurmer;
+    public String getPerfumer1() {
+        return perfumer1;
     }
 
-    public void setPerfurmer(String perfurmer) {
-        this.perfurmer = perfurmer;
+    public void setPerfumer1(String perfumer1) {
+        this.perfumer1 = perfumer1;
     }
 
-    public String getMainaccon() {
-        return mainaccon;
+    public String getPerfumer2() {
+        return perfumer2;
     }
 
-    public void setMainaccon(String mainaccon) {
-        this.mainaccon = mainaccon;
+    public void setPerfumer2(String perfumer2) {
+        this.perfumer2 = perfumer2;
     }
 
-    public String getCountry() {
-        return country;
+    public String getMainaccord1() {
+        return mainaccord1;
     }
 
-    public void setCountry(String country) {
-        this.country = country;
+    public void setMainaccord1(String mainaccord1) {
+        this.mainaccord1 = mainaccord1;
+    }
+
+    public String getMainaccord2() {
+        return mainaccord2;
+    }
+
+    public void setMainaccord2(String mainaccord2) {
+        this.mainaccord2 = mainaccord2;
+    }
+
+    public String getMainaccord3() {
+        return mainaccord3;
+    }
+
+    public void setMainaccord3(String mainaccord3) {
+        this.mainaccord3 = mainaccord3;
+    }
+
+    public String getMainaccord4() {
+        return mainaccord4;
+    }
+
+    public void setMainaccord4(String mainaccord4) {
+        this.mainaccord4 = mainaccord4;
+    }
+
+    public String getMainaccord5() {
+        return mainaccord5;
+    }
+
+    public void setMainaccord5(String mainaccord5) {
+        this.mainaccord5 = mainaccord5;
     }
 
     @Override

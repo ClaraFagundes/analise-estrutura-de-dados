@@ -17,6 +17,8 @@ public class TesteOrdenacao {
     private static final int[] TAMANHOS = {1000, 10000, 50000, 91134};
     private static final String[] CASOS = {"caso_ordem_crescente", "caso_qualquer", "caso_ordem_decrescente"};
 
+    private static final int LIMITE_BUBBLE_SELECTION = 10000;
+
     private static final String CSV_CRESC   = "src/common/other/fragrantica_asc.csv";
     private static final String CSV_QUALQUER = "src/common/other/fragrantica_random.csv";
     private static final String CSV_DESCRESC     = "src/common/other/fragrantica_desc.csv";
@@ -56,10 +58,21 @@ public class TesteOrdenacao {
         }
     }
 
+    private static boolean deveExecutar(String algoritmo, int tamanho) {
+        boolean isBubbleOuSelection = algoritmo.equals("bubbleSort") || algoritmo.equals("selectionSort");
+        if (isBubbleOuSelection && tamanho > LIMITE_BUBBLE_SELECTION) {
+            System.out.printf("[PULADO] %s | n=%d (acima do limite de %d)%n", algoritmo, tamanho, LIMITE_BUBBLE_SELECTION);
+            return false;
+        }
+        return true;
+    }
+
     // ===================== LISTA COM ARRANJO =====================
 
     private static void testeArranjo(PrintWriter out, String caso, String arquivo, int tamanho) throws FileNotFoundException {
         for (String algoritmo : TODOS_ARRANJO) {
+            if (!deveExecutar(algoritmo, tamanho)) continue;
+
             medirEregistrar(out, "ListaArranjo", caso, algoritmo, tamanho, () -> {
                 ListaArranjo lista = new ListaArranjo(TipoInsercao.FINAL, tamanho);
                 try {
@@ -76,6 +89,8 @@ public class TesteOrdenacao {
 
     private static void testeApontador(PrintWriter out, String caso, String arquivo, int tamanho) {
         for (String algoritmo : NATIVOS_APONTADOR) {
+            if (!deveExecutar(algoritmo, tamanho)) continue;
+
             medirEregistrar(out, "ListaApontador", caso, algoritmo, tamanho, () -> {
                 ListaApontador lista = new ListaApontador(TipoInsercao.FINAL);
                 try {
@@ -88,6 +103,8 @@ public class TesteOrdenacao {
         }
 
         for (String algoritmo : INDEX_BOUND_APONTADOR) {
+            if (!deveExecutar(algoritmo, tamanho)) continue;
+
             medirEregistrar(out, "ListaApontador", caso, algoritmo, tamanho, () -> {
                 ListaApontador lista = new ListaApontador(TipoInsercao.FINAL);
                 try {
@@ -106,6 +123,8 @@ public class TesteOrdenacao {
 
     private static void testeDupla(PrintWriter out, String caso, String arquivo, int tamanho) {
         for (String algoritmo : NATIVOS_DUPLA) {
+            if (!deveExecutar(algoritmo, tamanho)) continue;
+
             medirEregistrar(out, "ListaDupla", caso, algoritmo, tamanho, () -> {
                 ListaDupla lista = new ListaDupla(TipoInsercao.FINAL);
                 try {
@@ -118,6 +137,8 @@ public class TesteOrdenacao {
         }
 
         for (String algoritmo : INDEX_BOUND_DUPLA) {
+            if (!deveExecutar(algoritmo, tamanho)) continue;
+
             medirEregistrar(out, "ListaDupla", caso, algoritmo, tamanho, () -> {
                 ListaDupla lista = new ListaDupla(TipoInsercao.FINAL);
                 try {
