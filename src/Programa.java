@@ -1,67 +1,287 @@
-import datastructures.ArvoreAVL.TArvoreAVL;
-import datastructures.ArvoreBST.ArvoreBST;
-import datastructures.ListaApontador.ListaApontador;
 import datastructures.ListaArranjo.ListaArranjo;
-import datastructures.ListaDupla.ListaDupla;
-import datastructures.PilhaApontador.PilhaApontador;
-import datastructures.PilhaArranjo.PilhaArranjo;
-import datastructures.FilaApontador.FilaApontador;
-import datastructures.FilaArranjo.FilaArranjo;
-import entities.EstruturaDeDados;
+import entities.Cronometro;
 import entities.Util;
 import entities.enums.TipoInsercao;
-import java.util.Scanner;
+import common.Perfume;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class Programa {
 
-    public static void main(String[] args) throws FileNotFoundException {
+    private static final int CAPACIDADE = 100000;
+    private static final int TOTAL_REGISTROS = 91132;
+    private static final String ARQUIVO_CSV = "src/common/fragrantica_dataset.csv";
 
+    public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
-        ArrayList<EstruturaDeDados> estruturaDeDados = new ArrayList<>();
+        ListaArranjo lista = new ListaArranjo(CAPACIDADE);
+        boolean carregado = false;
 
-        int quantidadeDeDados = 1000;
+        int opcao;
+        do {
+            exibirMenu();
+            opcao = lerOpcao(sc);
 
-        //ÁRVORE AVL
-        TArvoreAVL arvoreAVL = new TArvoreAVL();
-        estruturaDeDados.add(arvoreAVL);
+            switch (opcao) {
+                case 1 -> {
+                    if (carregado) {
+                        System.out.println("A base ja foi carregada. Reinicie o programa para recarregar.");
+                        break;
+                    }
+                    carregarBase(lista);
+                    if (lista.getTotalRegistros() > 0) carregado = true;
+                }
+                case 2 -> buscarPerfume(sc, lista, carregado);
+                case 3 -> inserirPerfume(sc, lista, carregado);
+                case 4 -> removerPerfume(sc, lista, carregado);
+                case 5 -> listarPerfumes(lista, carregado);
+                case 6 -> exibirEstatisticas(lista, carregado);
+                case 0 -> System.out.println("Encerrando...");
+                default -> System.out.println("Opção invalida.");
+            }
+        } while (opcao != 0);
 
-        //ÁRVORE BST
-        ArvoreBST arvoreBST = new ArvoreBST();
-        estruturaDeDados.add(arvoreBST);
+        sc.close();
+    }
 
-        //LISTA APONTADOR
-        //Há 2 variáveis para listas por conta da forma de inserção
-        ListaApontador listaApontadorInicio = new ListaApontador(TipoInsercao.INICIO);
-        estruturaDeDados.add(listaApontadorInicio);
+    // ===================== MENU =====================
 
-        ListaApontador listaApontadorFinal = new ListaApontador(TipoInsercao.FINAL);
-        estruturaDeDados.add(listaApontadorFinal);
+    private static void exibirMenu() {
+        System.out.println("\n===== CATALOGO DE PERFUMES =====");
+        System.out.println("1 - Carregar base de dados");
+        System.out.println("2 - Buscar perfume por ID");
+        System.out.println("3 - Inserir novo perfume");
+        System.out.println("4 - Remover perfume por ID");
+        System.out.println("5 - Listar todos os perfumes");
+        System.out.println("6 - Exibir estatísticas da base");
+        System.out.println("0 - Sair");
+        System.out.print("Opção: ");
+    }
 
-        //LISTA ARRANJO
-        //Tive que colocar a quantidade de dados no construtor por conta que tem que inicializar o array...
-        ListaArranjo listaArranjoInicio = new ListaArranjo(TipoInsercao.INICIO, quantidadeDeDados);
-        estruturaDeDados.add(listaArranjoInicio);
+    private static int lerOpcao(Scanner sc) {
+        try {
+            return sc.nextInt();
+        } catch (InputMismatchException e) {
+            sc.next(); // descarta entrada invalida
+            return -1;
+        }
+    }
 
-        ListaArranjo listaArranjoFinal = new ListaArranjo(TipoInsercao.FINAL, quantidadeDeDados);
-        estruturaDeDados.add(listaArranjoFinal);
+    // ===================== CARGA (OPCAO 1) =====================
 
-        //LISTA DUPLAMENTE ENCADEADA
-        ListaDupla listaDuplaInicio = new ListaDupla(TipoInsercao.INICIO);
-        estruturaDeDados.add(listaDuplaInicio);
+    private static void carregarBase(ListaArranjo lista) {
+        System.out.println("Carregando base de dados...");
 
-        ListaDupla listaDuplaFinal = new ListaDupla(TipoInsercao.FINAL);
-        estruturaDeDados.add(listaDuplaFinal);
+        Cronometro cronometro = new Cronometro();
 
-        String arquivo = "src/common/fragrantica_dataset.csv";
+        try {
+            cronometro.iniciar();
+            Cronometro tempoArmazenar = Util.armazenar(lista, ARQUIVO_CSV, TOTAL_REGISTROS);
+            System.out.printf("Armazenamento concluído: %.3f ms%n", tempoArmazenar.getTempoMs());
 
-        for (EstruturaDeDados ds : estruturaDeDados) {
-            Util.armazenar(ds, arquivo, quantidadeDeDados);
+            System.out.println("Ordenando com mergeSort...");
+            lista.mergeSort();
+            cronometro.finalizar();
+
+            System.out.printf("Carga + ordenação concluídas em %.3f ms%n", cronometro.getTempoMs());
+
+            System.out.println("Base carregada com sucesso! " + TOTAL_REGISTROS + " registros.");
+
+        } catch (FileNotFoundException e) {
+            System.out.println("Erro: Arquivo nao encontrado em " + ARQUIVO_CSV);
+        }
+    }
+
+    // ===================== BUSCA (OPCAO 2) =====================
+
+    private static void buscarPerfume(Scanner sc, ListaArranjo lista, boolean carregado) {
+        if (!verificarCarregado(carregado)) return;
+
+        int id = lerId(sc, "Digite o ID do perfume: ");
+        if (id < 0) return;
+
+        Perfume chave = new Perfume(id);
+
+        Cronometro cronometro = new Cronometro();
+        cronometro.iniciar();
+        Perfume encontrado = lista.PesquisaBinaria(chave);
+        cronometro.finalizar();
+
+        if (encontrado != null) {
+            System.out.println("Perfume encontrado:");
+            System.out.println("  " + encontrado);
+            System.out.printf("Tempo: %.3f ms | Comparações: %d%n",
+                    cronometro.getTempoMs(), lista.getComparacoes());
+        } else {
+            System.out.println("Perfume com ID " + id + " nao encontrado.");
+        }
+    }
+
+    // ===================== INSERCAO (OPCAO 3) =====================
+
+    private static void inserirPerfume(Scanner sc, ListaArranjo lista, boolean carregado) {
+        if (!verificarCarregado(carregado)) return;
+
+        if (lista.Cheia()) {
+            System.out.println("Erro: Lista cheia! Capacidade maxima de " + CAPACIDADE + " registros atingida.");
+            return;
         }
 
-        Util.pesquisar(estruturaDeDados);
+        System.out.println("--- Inserir novo perfume ---");
+
+        int id = lerId(sc, "ID: ");
+        if (id < 0) return;
+
+        if (lista.PesquisaBinaria(new Perfume(id)) != null) {
+            System.out.println("Erro: ID " + id + " ja existe na base.");
+            return;
+        }
+
+        sc.nextLine();
+
+        String nome = lerStringObrigatoria(sc, "Nome: ");
+        String brand = lerStringObrigatoria(sc, "Marca (brand): ");
+        String country = lerStringObrigatoria(sc, "Pais (country): ");
+        String gender = lerStringObrigatoria(sc, "Sexo (gender): ");
+
+        double ratingValue = 0.0;
+        int ratingCount = 0;
+
+        double year = lerDoubleObrigatorio(sc, "Ano (year): ");
+
+        String top = lerStringObrigatoria(sc, "Notas de topo (top): ");
+        String middle = lerStringObrigatoria(sc, "Notas de corpo (middle): ");
+        String base = lerStringObrigatoria(sc, "Notas de fundo (base): ");
+
+        String perfumer1 = lerStringOpcional(sc, "Perfumista 1 (opcional, Enter para unknown): ");
+        String perfumer2 = lerStringOpcional(sc, "Perfumista 2 (opcional, Enter para unknown): ");
+        String mainaccord1 = lerStringOpcional(sc, "Acorde principal 1 (opcional, Enter para unknown): ");
+        String mainaccord2 = lerStringOpcional(sc, "Acorde principal 2 (opcional, Enter para unknown): ");
+        String mainaccord3 = lerStringOpcional(sc, "Acorde principal 3 (opcional, Enter para unknown): ");
+        String mainaccord4 = lerStringOpcional(sc, "Acorde principal 4 (opcional, Enter para unknown): ");
+        String mainaccord5 = lerStringOpcional(sc, "Acorde principal 5 (opcional, Enter para unknown): ");
+
+        Perfume novo = new Perfume(
+                id, nome, brand, country, gender,
+                ratingValue, ratingCount, year,
+                top, middle, base,
+                perfumer1, perfumer2,
+                mainaccord1, mainaccord2, mainaccord3, mainaccord4, mainaccord5
+        );
+
+
+        Cronometro cronometro = new Cronometro();
+        cronometro.iniciar();
+
+        lista.InsereFinal(novo);
+        lista.insertionSort();
+
+        cronometro.finalizar();
+
+        System.out.println("Perfume ID " + id + " inserido com sucesso no final da lista.");
+        System.out.printf("Inserção + ordenação concluídas em %.3f ms%n", cronometro.getTempoMs());
+
+    }
+
+    // ===================== REMOCAO (OPCAO 4) =====================
+
+    private static void removerPerfume(Scanner sc, ListaArranjo lista, boolean carregado) {
+        if (!verificarCarregado(carregado)) return;
+
+        int id = lerId(sc, "Digite o ID do perfume a remover: ");
+        if (id < 0) return;
+
+        Perfume encontrado = lista.PesquisaBinaria(new Perfume(id));
+
+        if (encontrado == null) {
+            System.out.println("Perfume com ID " + id + " nao encontrado.");
+            return;
+        }
+
+        System.out.println("Perfume encontrado:");
+        System.out.println("  " + encontrado);
+
+        System.out.print("Confirmar remoção? (s/N): ");
+        sc.nextLine();
+        String confirma = sc.nextLine().trim().toLowerCase();
+
+        if (confirma.equals("s") || confirma.equals("sim")) {
+            lista.PesquisaRemove(id);
+            System.out.println("Perfume ID " + id + " removido.");
+        } else {
+            System.out.println("Remoção cancelada.");
+        }
+    }
+
+    // ===================== LISTAGEM (OPCAO 5) =====================
+
+    private static void listarPerfumes(ListaArranjo lista, boolean carregado) {
+        if (!verificarCarregado(carregado)) return;
+        lista.Imprime();
+    }
+
+    // ===================== ESTATISTICAS (OPCAO 6) =====================
+
+    private static void exibirEstatisticas(ListaArranjo lista, boolean carregado) {
+        if (!verificarCarregado(carregado)) return;
+        System.out.println("=== Estatísticas da Base ===");
+        System.out.println("Total de registros: " + lista.getTotalRegistros());
+    }
+
+    // ===================== UTILITARIOS DE ENTRADA =====================
+
+    private static boolean verificarCarregado(boolean carregado) {
+        if (!carregado) {
+            System.out.println("Nenhuma base carregada. Selecione a opção 1 primeiro.");
+            return false;
+        }
+        return true;
+    }
+
+    private static int lerId(Scanner sc, String mensagem) {
+        while (true) {
+            System.out.print(mensagem);
+            try {
+                int valor = sc.nextInt();
+                if (valor < 0) {
+                    System.out.println("Erro: ID nao pode ser negativo.");
+                    continue;
+                }
+                return valor;
+            } catch (InputMismatchException e) {
+                System.out.println("Erro: Digite um numero inteiro valido.");
+                sc.next();
+            }
+        }
+    }
+
+    private static String lerStringObrigatoria(Scanner sc, String mensagem) {
+        while (true) {
+            System.out.print(mensagem);
+            String valor = sc.nextLine().trim();
+            if (!valor.isEmpty()) return valor;
+            System.out.println("Erro: Este campo e obrigatorio.");
+        }
+    }
+
+    private static double lerDoubleObrigatorio(Scanner sc, String mensagem) {
+        while (true) {
+            System.out.print(mensagem);
+            try {
+                double valor = Double.parseDouble(sc.nextLine().trim().replace(",", "."));
+                return valor;
+            } catch (NumberFormatException e) {
+                System.out.println("Erro: Digite um numero valido (ex: 2020 ou 2020.5).");
+            }
+        }
+    }
+
+    private static String lerStringOpcional(Scanner sc, String mensagem) {
+        System.out.print(mensagem);
+        String valor = sc.nextLine().trim();
+        return valor.isEmpty() ? "unknown" : valor;
     }
 }
