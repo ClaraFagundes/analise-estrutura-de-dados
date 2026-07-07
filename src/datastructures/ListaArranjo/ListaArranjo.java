@@ -103,7 +103,6 @@ public class ListaArranjo implements EstruturaDeDados {
             if (Item[aux].getChave() == chave) {
                 System.out.println("Removido: " + chave);
                 RemovePosicao(aux);
-                Ultimo--;
             } else System.out.println("Não encontrado");
         }
     }

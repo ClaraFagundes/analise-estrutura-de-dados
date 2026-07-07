@@ -13,6 +13,7 @@ public class Programa {
     private static final int CAPACIDADE = 100000;
     private static final int TOTAL_REGISTROS = 91132;
     private static final String ARQUIVO_CSV = "src/common/fragrantica_dataset.csv";
+    private static int proximoId = TOTAL_REGISTROS + 1;
 
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -132,13 +133,7 @@ public class Programa {
 
         System.out.println("--- Inserir novo perfume ---");
 
-        int id = lerId(sc, "ID: ");
-        if (id < 0) return;
-
-        if (lista.PesquisaBinaria(new Perfume(id)) != null) {
-            System.out.println("Erro: ID " + id + " ja existe na base.");
-            return;
-        }
+        int id = proximoId++;
 
         sc.nextLine();
 
