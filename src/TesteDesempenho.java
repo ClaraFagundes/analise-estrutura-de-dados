@@ -73,7 +73,7 @@ public class TesteDesempenho {
                     continue;
             }
 
-//            executarTeste(arquivo, limite);
+            executarTeste(arquivo, limite);
         }
 
         sc.close();
