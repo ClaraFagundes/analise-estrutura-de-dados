@@ -163,18 +163,25 @@ public class ListaArranjo implements EstruturaDeDados {
 
     public Perfume PesquisaBinaria(Perfume item) {
         comparacoes = 0;
-
         if (Vazia()) return null;
-        int inic = 0, fim = Ultimo - 1, meio = (inic + fim) / 2;
-        while ((Item[meio].getChave() != item.getChave()) && (inic != fim)) {
-            if (item.getChave() > Item[meio].getChave()) inic = meio + 1;
-            else fim = meio;
+
+        int inic = 0;
+        int fim = Ultimo - 1;
+
+        while (inic <= fim) {
+            int meio = inic + (fim - inic) / 2;
             comparacoes++;
-            meio = (inic + fim) / 2;
-        }
-        comparacoes++;
-        if (Item[meio].getChave() == item.getChave()) {
-            return Item[meio];
+
+            long chaveMeio = Item[meio].getChave();
+            long chaveBusca = item.getChave();
+
+            if (chaveBusca == chaveMeio) {
+                return Item[meio];
+            } else if (chaveBusca > chaveMeio) {
+                inic = meio + 1;
+            } else {
+                fim = meio - 1;
+            }
         }
 
         return null;
