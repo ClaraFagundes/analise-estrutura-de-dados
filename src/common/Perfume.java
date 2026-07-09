@@ -204,6 +204,41 @@ public class Perfume {
 
     @Override
     public String toString() {
-        return "Perfume -> Chave = " + chave + ", Nome = " + nome;
+        String sNome = (nome == null || nome.isEmpty()) ? "-" : nome;
+        String sBrand = (brand == null || brand.isEmpty()) ? "-" : brand;
+        String sCountry = (country == null || country.isEmpty()) ? "-" : country;
+        String sGender = (gender == null || gender.isEmpty()) ? "-" : gender;
+        String sTop = (top == null || top.isEmpty()) ? "-" : top;
+        String sMiddle = (middle == null || middle.isEmpty()) ? "-" : middle;
+        String sBase = (base == null || base.isEmpty()) ? "-" : base;
+
+        String p1 = (perfumer1 == null || perfumer1.isEmpty()) ? "" : perfumer1;
+        String p2 = (perfumer2 == null || perfumer2.isEmpty() || perfumer2.equals("unknown")) ? "" : perfumer2;
+        String perfumers = p1.isEmpty() && p2.isEmpty() ? "-"
+                : p2.isEmpty() ? p1
+                : p1.isEmpty() ? p2
+                : p1 + ", " + p2;
+
+        StringBuilder accords = new StringBuilder();
+        if (mainaccord1 != null && !mainaccord1.isEmpty() && !mainaccord1.equals("unknown"))
+            accords.append(mainaccord1);
+        if (mainaccord2 != null && !mainaccord2.isEmpty() && !mainaccord2.equals("unknown"))
+            accords.append(accords.length() > 0 ? ", " : "").append(mainaccord2);
+        if (mainaccord3 != null && !mainaccord3.isEmpty() && !mainaccord3.equals("unknown"))
+            accords.append(accords.length() > 0 ? ", " : "").append(mainaccord3);
+        if (mainaccord4 != null && !mainaccord4.isEmpty() && !mainaccord4.equals("unknown"))
+            accords.append(accords.length() > 0 ? ", " : "").append(mainaccord4);
+        if (mainaccord5 != null && !mainaccord5.isEmpty() && !mainaccord5.equals("unknown"))
+            accords.append(accords.length() > 0 ? ", " : "").append(mainaccord5);
+        String acordes = accords.length() == 0 ? "-" : accords.toString();
+
+        return String.format(
+                "ID: %d%nNome: %s%nMarca: %s%nPaís: %s%nGênero: %s%n"
+                + "Avaliação: %.2f (%d avaliações)%nAno: %.0f%n"
+                + "Notas de topo: %s%nNotas de corpo: %s%nNotas de fundo: %s%n"
+                + "Perfumista(s): %s%nAcordes principais: %s",
+                chave, sNome, sBrand, sCountry, sGender,
+                ratingValue, ratingCount, year,
+                sTop, sMiddle, sBase, perfumers, acordes);
     }
 }

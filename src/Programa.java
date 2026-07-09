@@ -24,7 +24,7 @@ public class Programa {
 
         int opcao;
         do {
-            exibirMenu();
+            exibirMenu(lista);
             opcao = lerOpcao(sc);
 
             switch (opcao) {
@@ -52,10 +52,10 @@ public class Programa {
 
     // ===================== MENU =====================
 
-    private static void exibirMenu() {
+    private static void exibirMenu(ListaArranjo lista) {
         System.out.println("\n===== CATALOGO DE PERFUMES =====");
         System.out.println("1 - Carregar base de dados");
-        System.out.println("2 - Buscar perfume");
+        System.out.println("2 - Buscar perfume (" + lista.getCriterio() + ")");
         System.out.println("3 - Inserir novo perfume");
         System.out.println("4 - Remover perfume por ID");
         System.out.println("5 - Listar todos os perfumes");
