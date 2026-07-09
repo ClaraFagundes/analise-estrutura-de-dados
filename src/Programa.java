@@ -1,3 +1,4 @@
+import common.CriterioOrdenacao;
 import datastructures.ListaArranjo.ListaArranjo;
 import entities.Cronometro;
 import entities.Util;
@@ -40,6 +41,7 @@ public class Programa {
                 case 4 -> removerPerfume(sc, lista, carregado);
                 case 5 -> listarPerfumes(lista, carregado);
                 case 6 -> exibirEstatisticas(lista, carregado);
+                case 7 -> alterarCriterio(sc, lista, carregado);
                 case 0 -> System.out.println("Encerrando...");
                 default -> System.out.println("Opção invalida.");
             }
@@ -53,11 +55,12 @@ public class Programa {
     private static void exibirMenu() {
         System.out.println("\n===== CATALOGO DE PERFUMES =====");
         System.out.println("1 - Carregar base de dados");
-        System.out.println("2 - Buscar perfume por ID");
+        System.out.println("2 - Buscar perfume");
         System.out.println("3 - Inserir novo perfume");
         System.out.println("4 - Remover perfume por ID");
         System.out.println("5 - Listar todos os perfumes");
         System.out.println("6 - Exibir estatísticas da base");
+        System.out.println("7 - Alterar criterio de ordenacao (ID/NOME)");
         System.out.println("0 - Sair");
         System.out.print("Opção: ");
     }
@@ -101,10 +104,16 @@ public class Programa {
     private static void buscarPerfume(Scanner sc, ListaArranjo lista, boolean carregado) {
         if (!verificarCarregado(carregado)) return;
 
-        int id = lerId(sc, "Digite o ID do perfume: ");
-        if (id < 0) return;
-
-        Perfume chave = new Perfume(id);
+        Perfume chave;
+        if (lista.getCriterio() == CriterioOrdenacao.ID) {
+            int id = lerId(sc, "Digite o ID do perfume: ");
+            if (id < 0) return;
+            chave = new Perfume(id);
+        } else {
+            sc.nextLine();
+            String nome = lerStringObrigatoria(sc, "Digite o NOME do perfume: ");
+            chave = new Perfume(nome);
+        }
 
         Cronometro cronometro = new Cronometro();
         cronometro.iniciar();
@@ -117,7 +126,7 @@ public class Programa {
             System.out.printf("Tempo: %.3f ms | Comparações: %d%n",
                     cronometro.getTempoMs(), lista.getComparacoes());
         } else {
-            System.out.println("Perfume com ID " + id + " nao encontrado.");
+            System.out.println("Perfume nao encontrado.");
         }
     }
 
@@ -186,6 +195,13 @@ public class Programa {
     private static void removerPerfume(Scanner sc, ListaArranjo lista, boolean carregado) {
         if (!verificarCarregado(carregado)) return;
 
+        if (lista.getCriterio() != CriterioOrdenacao.ID) {
+            System.out.println("Remocao por ID requer que a base esteja ordenada por ID. "
+                    + "Criterio atual: " + lista.getCriterio()
+                    + ". Use a opcao 7 para voltar ao criterio ID antes de remover.");
+            return;
+        }
+
         int id = lerId(sc, "Digite o ID do perfume a remover: ");
         if (id < 0) return;
 
@@ -224,6 +240,42 @@ public class Programa {
         if (!verificarCarregado(carregado)) return;
         System.out.println("=== Estatísticas da Base ===");
         System.out.println("Total de registros: " + lista.getTotalRegistros());
+    }
+
+    // ===================== CRITERIO (OPCAO 7) =====================
+
+    private static void alterarCriterio(Scanner sc, ListaArranjo lista, boolean carregado) {
+        System.out.println("Criterio atual: " + lista.getCriterio());
+        System.out.println("1 - ID");
+        System.out.println("2 - NOME");
+        System.out.print("Escolha: ");
+        int escolha = lerOpcao(sc);
+
+        CriterioOrdenacao novo;
+        switch (escolha) {
+            case 1 -> novo = CriterioOrdenacao.ID;
+            case 2 -> novo = CriterioOrdenacao.NOME;
+            default -> {
+                System.out.println("Opcao invalida.");
+                return;
+            }
+        }
+
+        lista.setCriterio(novo);
+        System.out.println("Criterio alterado para: " + novo);
+
+        if (carregado) {
+            System.out.print("Deseja reordenar a base agora com mergeSort? (s/N): ");
+            sc.nextLine();
+            String resp = sc.nextLine().trim().toLowerCase();
+            if (resp.equals("s") || resp.equals("sim")) {
+                Cronometro cron = new Cronometro();
+                cron.iniciar();
+                lista.mergeSort();
+                cron.finalizar();
+                System.out.printf("Reordenacao concluida em %.3f ms%n", cron.getTempoMs());
+            }
+        }
     }
 
     // ===================== UTILITARIOS DE ENTRADA =====================

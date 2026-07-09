@@ -1,5 +1,6 @@
 package datastructures.ListaArranjo;
 
+import common.CriterioOrdenacao;
 import common.Perfume;
 import entities.Cronometro;
 import entities.EstruturaDeDados;
@@ -12,6 +13,7 @@ public class ListaArranjo implements EstruturaDeDados {
     private int Ultimo;
     private int comparacoes;
     private TipoInsercao tipoInsercao = TipoInsercao.FINAL;
+    private CriterioOrdenacao criterio = CriterioOrdenacao.ID;
     private Cronometro cronometro;
 
     public ListaArranjo(int Tmax) {
@@ -161,6 +163,22 @@ public class ListaArranjo implements EstruturaDeDados {
         return comparacoes;
     }
 
+    public void setCriterio(CriterioOrdenacao criterio) {
+        this.criterio = criterio;
+    }
+
+    public CriterioOrdenacao getCriterio() {
+        return criterio;
+    }
+
+    private int comparar(Perfume p1, Perfume p2) {
+        if (criterio == CriterioOrdenacao.ID) {
+            return Integer.compare(p1.getChave(), p2.getChave());
+        } else {
+            return p1.getNome().compareToIgnoreCase(p2.getNome());
+        }
+    }
+
     public Perfume PesquisaBinaria(Perfume item) {
         comparacoes = 0;
         if (Vazia()) return null;
@@ -172,12 +190,11 @@ public class ListaArranjo implements EstruturaDeDados {
             int meio = inic + (fim - inic) / 2;
             comparacoes++;
 
-            long chaveMeio = Item[meio].getChave();
-            long chaveBusca = item.getChave();
+            int cmp = comparar(item, Item[meio]);
 
-            if (chaveBusca == chaveMeio) {
+            if (cmp == 0) {
                 return Item[meio];
-            } else if (chaveBusca > chaveMeio) {
+            } else if (cmp > 0) {
                 inic = meio + 1;
             } else {
                 fim = meio - 1;
@@ -190,7 +207,7 @@ public class ListaArranjo implements EstruturaDeDados {
     public void Ordena() {
         for (int i = 0; i < Ultimo - 1; i++)
             for (int j = 0; j < Ultimo - 1 - i; j++)
-                if (Item[j].getChave() > Item[j + 1].getChave()) {
+                if (comparar(Item[j], Item[j + 1]) > 0) {
                     Perfume temp = Item[j];
                     Item[j] = Item[j + 1];
                     Item[j + 1] = temp;
@@ -226,7 +243,7 @@ public class ListaArranjo implements EstruturaDeDados {
 
         for (out = Ultimo - 1; out >= Primeiro + 1; out--)
             for (in = Primeiro; in < out; in++)
-                if (Item[in].getChave() > Item[in + 1].getChave())
+                if (comparar(Item[in], Item[in + 1]) > 0)
                     swap(in, in + 1);
     }
 
@@ -236,7 +253,7 @@ public class ListaArranjo implements EstruturaDeDados {
         for (out = Primeiro; out < Ultimo - 1; out++) {
             min = out;
             for (in = out + 1; in < Ultimo - 1; in++)
-                if (Item[in].getChave() < Item[min].getChave())
+                if (comparar(Item[in], Item[min]) < 0)
                     min = in;
             swap(out, min);
         }
@@ -248,7 +265,7 @@ public class ListaArranjo implements EstruturaDeDados {
         for (out = Primeiro + 1; out < Ultimo; out++) {
             Perfume temp = Item[out];
             in = out;
-            while (in > Primeiro && Item[in - 1].getChave() >= temp.getChave()) {
+            while (in > Primeiro && comparar(Item[in - 1], temp) >= 0) {
                 Item[in] = Item[in - 1];
                 --in;
             }
@@ -270,7 +287,7 @@ public class ListaArranjo implements EstruturaDeDados {
                 temp = Item[outer];
                 inner = outer;
 
-                while (inner > Primeiro + h - 1 && Item[inner - h].getChave() >= temp.getChave()) {
+                while (inner > Primeiro + h - 1 && comparar(Item[inner - h], temp) >= 0) {
                     Item[inner] = Item[inner - h];
                     inner -= h;
                 }
@@ -304,7 +321,7 @@ public class ListaArranjo implements EstruturaDeDados {
         int n = upperBound - lowerBound + 1;
 
         while (lowPtr <= mid && highPtr <= upperBound) {
-            if (Item[lowPtr].getChave() < Item[highPtr].getChave())
+            if (comparar(Item[lowPtr], Item[highPtr]) < 0)
                 workSpace[j++] = Item[lowPtr++];
             else
                 workSpace[j++] = Item[highPtr++];
@@ -328,7 +345,7 @@ public class ListaArranjo implements EstruturaDeDados {
         if (right - left <= 0)
             return;
         else {
-            long pivot = Item[right].getChave();
+            Perfume pivot = Item[right];
 
             int partition = partitionIt(left, right, pivot);
 
@@ -337,16 +354,16 @@ public class ListaArranjo implements EstruturaDeDados {
         }
     }
 
-    public int partitionIt(int left, int right, long pivot) {
+    public int partitionIt(int left, int right, Perfume pivot) {
         int leftPtr = left - 1;
         int rightPtr = right;
 
         while (true) {
 
-            while (Item[++leftPtr].getChave() < pivot)
+            while (comparar(Item[++leftPtr], pivot) < 0)
                 ;
 
-            while (rightPtr > Primeiro && Item[--rightPtr].getChave() > pivot)
+            while (rightPtr > Primeiro && comparar(Item[--rightPtr], pivot) > 0)
                 ;
 
             if (leftPtr >= rightPtr)
@@ -378,10 +395,10 @@ public class ListaArranjo implements EstruturaDeDados {
         int left = 2 * root + 1;
         int right = 2 * root + 2;
 
-        if (left < size && Item[Primeiro + left].getChave() > Item[Primeiro + largest].getChave())
+        if (left < size && comparar(Item[Primeiro + left], Item[Primeiro + largest]) > 0)
             largest = left;
 
-        if (right < size && Item[Primeiro + right].getChave() > Item[Primeiro + largest].getChave())
+        if (right < size && comparar(Item[Primeiro + right], Item[Primeiro + largest]) > 0)
             largest = right;
 
         if (largest != root) {

@@ -26,6 +26,10 @@ public class Perfume {
         this.chave = chave;
     }
 
+    public Perfume(String nome) {
+        this.nome = nome;
+    }
+
     public Perfume(int chave, String nome, String brand, String country, String gender,
                    double ratingValue, int ratingCount, double year,
                    String top, String middle, String base,
