@@ -155,6 +155,10 @@ public class ListaArranjo implements EstruturaDeDados {
         return cronometro;
     }
 
+    public Perfume getItem(int index) {
+        return Item[index];
+    }
+
     public int getTotalRegistros() {
         return Ultimo;
     }

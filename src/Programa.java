@@ -1,8 +1,9 @@
 import common.CriterioOrdenacao;
+import datastructures.ArvoreAVL.TArvoreAVL;
+import datastructures.ArvoreAVL.TNodo;
 import datastructures.ListaArranjo.ListaArranjo;
 import entities.Cronometro;
 import entities.Util;
-import entities.enums.TipoInsercao;
 import common.Perfume;
 
 import java.io.FileNotFoundException;
@@ -37,11 +38,12 @@ public class Programa {
                     if (lista.getTotalRegistros() > 0) carregado = true;
                 }
                 case 2 -> buscarPerfume(sc, lista, carregado);
-                case 3 -> inserirPerfume(sc, lista, carregado);
-                case 4 -> removerPerfume(sc, lista, carregado);
-                case 5 -> listarPerfumes(lista, carregado);
-                case 6 -> exibirEstatisticas(lista, carregado);
-                case 7 -> alterarCriterio(sc, lista, carregado);
+                case 3 -> buscarPerfumeAvl(sc, lista, carregado);
+                case 4 -> inserirPerfume(sc, lista, carregado);
+                case 5 -> removerPerfume(sc, lista, carregado);
+                case 6 -> listarPerfumes(lista, carregado);
+                case 7 -> exibirEstatisticas(lista, carregado);
+                case 8 -> alterarCriterio(sc, lista, carregado);
                 case 0 -> System.out.println("Encerrando...");
                 default -> System.out.println("Opção invalida.");
             }
@@ -56,11 +58,12 @@ public class Programa {
         System.out.println("\n===== CATALOGO DE PERFUMES =====");
         System.out.println("1 - Carregar base de dados");
         System.out.println("2 - Buscar perfume (" + lista.getCriterio() + ")");
-        System.out.println("3 - Inserir novo perfume");
-        System.out.println("4 - Remover perfume por ID");
-        System.out.println("5 - Listar todos os perfumes");
-        System.out.println("6 - Exibir estatísticas da base");
-        System.out.println("7 - Alterar criterio de ordenacao (ID/NOME)");
+        System.out.println("3 - Buscar perfume (ID | AVL)");
+        System.out.println("4 - Inserir novo perfume");
+        System.out.println("5 - Remover perfume por ID");
+        System.out.println("6 - Listar todos os perfumes");
+        System.out.println("7 - Exibir estatísticas da base");
+        System.out.println("8 - Alterar criterio de ordenacao (ID/NOME)");
         System.out.println("0 - Sair");
         System.out.print("Opção: ");
     }
@@ -130,7 +133,47 @@ public class Programa {
         }
     }
 
-    // ===================== INSERCAO (OPCAO 3) =====================
+    // ===================== BUSCA AVL (OPCAO 3) =====================
+
+    private static void buscarPerfumeAvl(Scanner sc, ListaArranjo lista, boolean carregado) {
+        if (!verificarCarregado(carregado)) return;
+
+        int id = lerId(sc, "Digite o ID do perfume para buscar na AVL: ");
+        if (id < 0) return;
+
+        TArvoreAVL avl = new TArvoreAVL();
+        Cronometro cronConversao = new Cronometro();
+
+        System.out.println("Convertendo array para AVL...");
+        cronConversao.iniciar();
+        for (int i = 0; i < lista.getTotalRegistros(); i++) {
+            avl.insere(lista.getItem(i));
+        }
+        cronConversao.finalizar();
+        double tempoConversao = cronConversao.getTempoMs();
+        System.out.printf("Tempo de conversao: %.3f ms%n", tempoConversao);
+
+        Perfume chave = new Perfume(id);
+        System.out.println("Buscando ID " + id + " na AVL...");
+
+        TNodo resultado = avl.pesquisa(chave);
+        double tempoBusca = avl.getCronometro().getTempoMs();
+        long comparacoes = avl.getComparacoes();
+
+        if (resultado != null) {
+            System.out.println("Perfume encontrado:");
+            System.out.println("  " + resultado.getItem());
+        } else {
+            System.out.println("Perfume nao encontrado.");
+        }
+
+        System.out.printf("Tempo de busca: %.3f ms | Comparacoes: %d%n",
+                tempoBusca, comparacoes);
+        System.out.printf("Tempo total (conversao + busca): %.3f ms%n",
+                tempoConversao + tempoBusca);
+    }
+
+    // ===================== INSERCAO (OPCAO 4) =====================
 
     private static void inserirPerfume(Scanner sc, ListaArranjo lista, boolean carregado) {
         if (!verificarCarregado(carregado)) return;
